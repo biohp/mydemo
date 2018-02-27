@@ -2,32 +2,31 @@
   <div id="carControl">
     <Layout>
         <Sider hide-trigger :style="{background: '#fff'}">
-            <Menu active-name="1-1" theme="primary" width="auto" :open-names="['1']" :accordion="true">
+            <Menu active-name="1-1" theme="primary" width="auto" :open-names="['1']" :accordion="true" @on-select="carControlNavClick">
                 <Submenu name="1">
                     <template slot="title">
                         <Icon type="ios-navigate"></Icon>
-                        通行监控
+                        过车数据
                     </template>
-                    <MenuItem name="1-1">通行车辆查询</MenuItem>
-                    <MenuItem name="1-2">违法闯禁查询</MenuItem>
-                    <MenuItem name="1-3">执勤管理</MenuItem>
+                    <MenuItem name="1-1">&nbsp;数据查询</MenuItem>
+                    <MenuItem name="1-2">&nbsp;数据统计</MenuItem>
                 </Submenu>
                 <Submenu name="2">
                     <template slot="title">
                         <Icon type="ios-keypad"></Icon>
                         服务区管理
                     </template>
-                    <MenuItem name="2-1">服务区管理</MenuItem>
-                    <MenuItem name="2-2">显示屏管理</MenuItem>
-                    <MenuItem name="2-3">卡口信息管理</MenuItem>
+                    <MenuItem name="2-1">&nbsp;服务区管理</MenuItem>
+                    <MenuItem name="2-2">&nbsp;显示屏管理</MenuItem>
+                    <MenuItem name="2-3">&nbsp;卡口信息管理</MenuItem>
                 </Submenu>
                 <Submenu name="3">
                     <template slot="title">
                         <Icon type="ios-analytics"></Icon>
                         Item 3
                     </template>
-                    <MenuItem name="3-1">Option 1</MenuItem>
-                    <MenuItem name="3-2">Option 2</MenuItem>
+                    <MenuItem name="3-1">&nbsp;Option 1</MenuItem>
+                    <MenuItem name="3-2">&nbsp;Option 2</MenuItem>
                 </Submenu>
             </Menu>
         </Sider>
@@ -35,7 +34,7 @@
             <Breadcrumb :style="{margin: '24px 0'}">
                 <BreadcrumbItem v-for="(item,key) in breadcrumbItem" :key="key">{{item.name}}</BreadcrumbItem>
             </Breadcrumb>
-            <Content :style="{padding: '24px', minHeight: '520px', background: '#fff'}">
+            <Content :style="{padding: '24px', minHeight: '600px', background: '#fff'}">
                 <router-view></router-view>
             </Content>
         </Layout>
@@ -50,13 +49,20 @@ export default {
     return {
     	breadcrumbItem:[
 	      { name: '车辆查控' },
-	      { name: '通行监控' },
-	      { name: '通行车辆查询' }
+	      { name: '过车数据' },
+	      { name: '数据查询' }
 	    ]
     }
   },
   methods:{
-  	
+  	carControlNavClick(name){
+  		if("1-1"===name){
+  			this.$router.push({ path: '/dataQuery' });
+  		} else if("1-2"===name){
+  			/*this.$router.push({ path: '/dataChart' });*/
+  		}
+  		console.log(name);
+  	}
   }
 }
 </script>

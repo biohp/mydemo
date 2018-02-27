@@ -6,27 +6,25 @@
                 <Submenu name="1">
                     <template slot="title">
                         <Icon type="ios-navigate"></Icon>
-                        用户权限管理
+                        用户管理
                     </template>
-                    <MenuItem name="1-1">用户管理</MenuItem>
-                    <MenuItem name="1-2">角色管理</MenuItem>
-                    <MenuItem name="1-3">功能管理</MenuItem>
+                    <MenuItem name="1-1">&nbsp;用户信息</MenuItem>
                 </Submenu>
                 <Submenu name="2">
                     <template slot="title">
                         <Icon type="ios-keypad"></Icon>
-                        组织机构管理
+                        权限管理
                     </template>
-                    <MenuItem name="2-1">机构管理</MenuItem>
-                    <MenuItem name="2-2">人员管理</MenuItem>
+                    <MenuItem name="2-1">&nbsp;角色管理</MenuItem>
+                    <MenuItem name="2-2">&nbsp;权限分配</MenuItem>
                 </Submenu>
                 <Submenu name="3">
                     <template slot="title">
                         <Icon type="ios-analytics"></Icon>
-                        Item 3
+                        参数配置
                     </template>
-                    <MenuItem name="3-1">Option 1</MenuItem>
-                    <MenuItem name="3-2">Option 2</MenuItem>
+                    <MenuItem name="3-1">&nbsp;数据字典</MenuItem>
+                    <MenuItem name="3-2">&nbsp;参数定义</MenuItem>
                 </Submenu>
             </Menu>
         </Sider>
@@ -49,8 +47,8 @@ export default {
     return {
     	breadcrumbItem:[
 	      { name: '系统管理' },
-	      { name: '用户权限管理' },
-	      { name: '用户管理' }
+	      { name: '用户管理' },
+	      { name: '用户信息' }
 	    ]
     }
   }

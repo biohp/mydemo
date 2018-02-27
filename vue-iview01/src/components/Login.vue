@@ -56,7 +56,7 @@ export default {
           })*/
           if("admin"===this.formInline.user&&"123456"===this.formInline.password){
               this.$Message.success('登录成功!');
-              this.$router.push({ path: '/carControl' });
+              this.$router.push({ path: '/dataQuery' });
           } else {
               this.$Message.error('登录失败!');
           }

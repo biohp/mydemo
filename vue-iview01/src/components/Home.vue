@@ -9,10 +9,10 @@
                         <img src="../assets/jh.png">
                       </div>
                   </Col>
-                  <Col span="5">
-                      <div class="header-title">个人测试</div>
+                  <Col span="16">
+                      <div class="header-title">湖南省高警局数据统一接入传输平台</div>
                   </Col>
-                  <Col span="17">
+                  <Col span="6">
                       <div class="header-nav" >
                         <ul class="header-nav-ul">
                           <li>
@@ -101,12 +101,12 @@ export default {
 }
 .header-title{
     color: #fff;   
-    font-size: 26px;
+    font-size: 24px;
     float:left;
     padding-left: 25px;
 }
 .header-nav{
-    font-size: 16px;
+    font-size: 15px;
     width: 420px;
     float: left;
 }
@@ -121,7 +121,7 @@ export default {
     color: #fff;
 }
 .header-nav-ul li:hover{
-    background-color: #1d39c4;
+    /*background-color: #40a9ff;*/
     cursor:pointer;
 }
 .header-nav-sign{
