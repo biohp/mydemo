@@ -1,0 +1,8 @@
+git init	初始化一个git仓库
+ls -ah		查看.git目录
+
+git add <file>	添加
+git commit -m "xxx"	提交
+
+git status	查看工作区状态
+git diff <file>	查看修改内容
