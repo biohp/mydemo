@@ -46,14 +46,20 @@ export default {
   },
   methods: {
       handleSubmit(name) {
-          this.$refs[name].validate((valid) => {
+          /*this.$refs[name].validate((valid) => {
               if (valid) {
                   this.$Message.success('登录成功!');
-                  this.$router.push({ path: '/o1' });
+                  this.$router.push({ path: '/carControl' });
               } else {
                   this.$Message.error('登录失败!');
               }
-          })
+          })*/
+          if("admin"===this.formInline.user&&"123456"===this.formInline.password){
+              this.$Message.success('登录成功!');
+              this.$router.push({ path: '/carControl' });
+          } else {
+              this.$Message.error('登录失败!');
+          }
       }
   }
 }

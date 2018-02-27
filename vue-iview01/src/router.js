@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './components/Login.vue'
 import Home from './components/Home.vue'
-import Option1 from './components/Option1.vue'
-import Option2 from './components/Option2.vue'
+import CarControl from './components/CarControl.vue'
+import SysManager from './components/SysManager.vue'
 
 Vue.use(Router) 
 export default new Router({
@@ -16,11 +16,11 @@ export default new Router({
 	  		component: Home,
 	  		children: [
 		        { 
-		        	path: '/o1',
-		        	component: Option1 
+		        	path: '/carControl',
+		        	component: CarControl 
 		        },{ 
-	  				path: '/o2', 
-	  				component: Option2 
+	  				path: '/sysManager', 
+	  				component: SysManager 
 	  			},
 	        ]
 	  	 },
