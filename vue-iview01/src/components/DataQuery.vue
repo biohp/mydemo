@@ -1,6 +1,5 @@
 <template>
   <div id="dataQuery">
-  	<Card dis-hover :bordered="false">
 	    <Form :model="xxcxForm" label-position="right" :label-width="80" inline>
 	        <FormItem label="车牌：">
 	        	<Input v-model="cphm" placeholder="输入车牌号码">
@@ -10,7 +9,7 @@
 			    </Input>
 	        </FormItem>
 	        <FormItem label="时间段：">
-	        	<DatePicker type="datetimerange" format="yyyy-MM-dd HH:mm" placeholder="选择时间段" style="width: 250px" v-model="tgsj" @on-change="getTgsj"></DatePicker>
+	        	<DatePicker type="datetimerange" placeholder="选择时间段" style="width: 280px" v-model="tgsj"></DatePicker>
 	        </FormItem>
 	        <FormItem label="车辆类型：">
 	            <Select v-model="xxcxForm.cllx" clearable style="width:200px">
@@ -25,7 +24,7 @@
 			        </div>
 			    </Poptip>
 	        </FormItem>
-	        <FormItem label="车道号：" v-show="!showCondition" style="margin-right: 35px">
+	        <FormItem label="车道号：" v-show="!showCondition" style="margin-right: 40px">
 	            <CheckboxGroup v-model="xxcxForm.cdh">
 			        <Checkbox label="1">&nbsp;1</Checkbox>&nbsp;
 			        <Checkbox label="2">&nbsp;2</Checkbox>&nbsp;
@@ -37,7 +36,7 @@
 			        <Checkbox label="8">&nbsp;8</Checkbox>&nbsp;
 			    </CheckboxGroup>
 	        </FormItem>
-	        <FormItem label="车行方向："  v-show="!showCondition">
+	        <FormItem label="车行方向："  v-show="!showCondition" style="margin-right: 33px">
 	            <CheckboxGroup v-model="xxcxForm.cxfx">
 			        <Checkbox label="1">由西向东</Checkbox>
 			        <Checkbox label="2">由东向西</Checkbox>
@@ -57,26 +56,23 @@
 		        </Tooltip>
 	        </FormItem>
 	    </Form>
-    </Card>
-    
-    <Card :bordered="false">
-    	<div slot="title">
-    		<Row>
-		        <Col span="21">
-		        	<p>过车数据</p> 
-		        </Col>
-		        <Col span="3">
-		        	显示边框 <i-switch v-model="showBorder"></i-switch>
-		        </Col>
-		    </Row>
-    	</div>
-        <Table :border="showBorder" stripe :columns="gcsjColumns" :data="gcsjResult"></Table>
-        <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page show-elevator :total="100" :current="1" show-total  @on-change="dataQueryChangePage" ></Page>
-            </div>
+	<div slot="title">
+		<Row>
+	        <Col span="21">
+	        	<strong>过车数据</strong> 
+	        </Col>
+	        <Col span="3">
+	        	显示边框 <i-switch v-model="showBorder" size="default"></i-switch>
+	        </Col>
+	    </Row>
+        <br>
+	</div>
+    <Table :border="showBorder" stripe :columns="gcsjColumns" :data="gcsjResult" size="small"></Table>
+    <div style="margin: 10px;overflow: hidden">
+        <div style="float: right;">
+            <Page show-elevator :total="total" :current="1" show-total @on-change="dataQueryChangePage" size="small"></Page>
         </div>
-    </Card>
+    </div>
   </div>
 </template>
 
@@ -88,15 +84,9 @@ export default {
         const end=new Date();
         const start=new Date();
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 3);
-        const startDate=`${start.getFullYear()}-${start.getMonth() + 1}-${start.getDate()} ${start.getHours()}:${start.getMinutes()}`;
-        const endDate=`${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()} ${end.getHours()}:${end.getMinutes()}`;
-        this.tgsj.push(startDate,endDate);
+        this.tgsj.push(start,end);
   },
   methods:{
-    /*获取时间*/
-    getTgsj(datetimerange){
-        this.tgsj=datetimerange;
-    },
     /*获取卡口*/
     xzkkChecked(){
         let arr = [];
@@ -116,7 +106,22 @@ export default {
   	/*提交表单*/
     xxcxFormSubmit(){
         this.xxcxForm.cp=this.cpdq+this.cphm;
-        this.xxcxForm.tgsj=this.tgsj;
+        this.xxcxForm.tgsj=[];
+        const start=new Date(this.tgsj[0].getTime());
+        const end=new Date(this.tgsj[1].getTime());
+        const startDate=`${start.getFullYear()}-${start.getMonth() + 1}-${start.getDate()} ${start.getHours()}:${start.getMinutes()}:${start.getSeconds()}`;
+        const endDate=`${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()} ${end.getHours()}:${end.getMinutes()}:${end.getSeconds()}`;
+        this.xxcxForm.tgsj.push(startDate,endDate);
+        /*this.$http.post('test', {
+            carData: this.xxcxForm
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });*/
+        console.log(this.xxcxForm);
     },
     /*重置表单*/
     xxcxFormReset(){
@@ -126,9 +131,7 @@ export default {
         const end=new Date();
         const start=new Date();
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 3);
-        const startDate=`${start.getFullYear()}-${start.getMonth() + 1}-${start.getDate()} ${start.getHours()}:${start.getMinutes()}`;
-        const endDate=`${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()} ${end.getHours()}:${end.getMinutes()}`;
-        this.tgsj.push(startDate,endDate);
+        this.tgsj.push(start,end);
         this.xxcxForm.cllx='';
         this.xxcxForm.cdh=[];
         this.xxcxForm.cxfx=[];
@@ -138,6 +141,7 @@ export default {
             arr[i].checked=false;
             this.xzkkLabel="选择卡口";
         } 
+        this.xxcxForm.page=1;
     },
     /*展开更多条件*/
     openCondition(){
@@ -155,13 +159,24 @@ export default {
         })
     },
     /*换页*/
-    dataQueryChangePage(){
-
+    dataQueryChangePage(page){
+        this.xxcxForm.page=page;
+        /*this.$http.post('test', {
+            carData: this.xxcxForm
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });*/
+        console.log(this.xxcxForm);
     },
 
   },
   data () {
     return {
+        total:90,
     	xxcxForm: {
             cp: '',
             tgsj: [],
@@ -169,18 +184,21 @@ export default {
             kkmc:[],
             cdh:[],
             cxfx:[],
+            page:1,
+            pageSize:10,
         },
         cpdq:'全部',
         cphm:'',
         cpdqList: [
-            {
-                value: '全部',
-                label: '全部'
-            },
-            {
-                value: '湘',
-                label: '湘'
-            },
+            {value: '全部',label: '全部'},
+            {value: '京',label: '京'},{value: '津',label: '津'},{value: '冀',label: '冀'},{value: '晋',label: '晋'},
+            {value: '蒙',label: '蒙'},{value: '辽',label: '辽'},{value: '吉',label: '吉'},{value: '黑',label: '黑'},
+            {value: '沪',label: '沪'},{value: '苏',label: '苏'},{value: '浙',label: '浙'},{value: '皖',label: '皖'},
+            {value: '闽',label: '闽'},{value: '赣',label: '赣'},{value: '鲁',label: '鲁'},{value: '豫',label: '豫'},
+            {value: '鄂',label: '鄂'},{value: '湘',label: '湘'},{value: '粤',label: '粤'},{value: '桂',label: '桂'},
+            {value: '琼',label: '琼'},{value: '陕',label: '陕'},{value: '甘',label: '甘'},{value: '青',label: '青'},
+            {value: '宁',label: '宁'},{value: '新',label: '新'},{value: '渝',label: '渝'},{value: '川',label: '川'},
+            {value: '黔',label: '黔'},{value: '滇',label: '滇'},{value: '藏',label: '藏'}
         ],
         tgsj:[],
         cllxList: [
@@ -338,6 +356,66 @@ export default {
                 cxfx: '由东向西',
                 cdh: '2',
                 xssd: 59,
+                clpp: '福田时代',
+                csys: '灰',
+                tp: 22,
+            },
+            {
+                tgsj: '2018-01-29 11:32:00',
+                kkmc: '环长沙西收费站长张高速15公里392米',
+                cp: '湘A79389',
+                cllx: '小型汽车',
+                cxfx: '由东向西',
+                cdh: '2',
+                xssd: 119,
+                clpp: '福田时代',
+                csys: '灰',
+                tp: 22,
+            },
+            {
+                tgsj: '2018-01-29 11:32:00',
+                kkmc: '环长沙西收费站长张高速15公里392米',
+                cp: '湘A79389',
+                cllx: '小型汽车',
+                cxfx: '由东向西',
+                cdh: '2',
+                xssd: 59,
+                clpp: '福田时代',
+                csys: '灰',
+                tp: 22,
+            },
+            {
+                tgsj: '2018-01-29 11:32:00',
+                kkmc: '环长沙西收费站长张高速15公里392米',
+                cp: '湘A79389',
+                cllx: '小型汽车',
+                cxfx: '由东向西',
+                cdh: '2',
+                xssd: 119,
+                clpp: '福田时代',
+                csys: '灰',
+                tp: 22,
+            },
+            {
+                tgsj: '2018-01-29 11:32:00',
+                kkmc: '环长沙西收费站长张高速15公里392米',
+                cp: '湘A79389',
+                cllx: '小型汽车',
+                cxfx: '由东向西',
+                cdh: '2',
+                xssd: 99,
+                clpp: '福田时代',
+                csys: '灰',
+                tp: 22,
+            },
+            {
+                tgsj: '2018-01-29 11:32:00',
+                kkmc: '环长沙西收费站长张高速15公里392米',
+                cp: '湘A79389',
+                cllx: '小型汽车',
+                cxfx: '由东向西',
+                cdh: '2',
+                xssd: 121,
                 clpp: '福田时代',
                 csys: '灰',
                 tp: 22,
