@@ -68,7 +68,7 @@ export default {
       }
     },
     carControlClick(){
-      this.$router.push({ path: '/carControl' });
+      this.$router.push({ path: '/dataQuery' });
       this.showSign=true;
     },
     sysManagerClick(){
@@ -81,13 +81,14 @@ export default {
 
 <style scoped>
 .layout{
-    background: #f5f7f9;
+    /*background: #f5f7f9;*/
+    background: #e9eaec;
     position: relative;
     overflow: hidden;
 }
 .header{
     background-image: linear-gradient(143deg,#2945cb 20%,#2b83f9 81%,#3a9dff); 
-    min-width: 1000px;   
+    min-width: 1000px;
 }
 .header-logo{
     float: left;

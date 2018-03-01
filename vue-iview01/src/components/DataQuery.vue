@@ -58,11 +58,15 @@
 	    </Form>
 	<div slot="title">
 		<Row>
-	        <Col span="21">
-	        	<strong>过车数据</strong> 
+	        <Col span="23">
+	        	<span>边框&nbsp;&nbsp;&nbsp;</span>
+                <i-switch v-model="showBorder">
+                    <span slot="open">开</span>
+                    <span slot="close">关</span>
+                </i-switch>
 	        </Col>
-	        <Col span="3">
-	        	显示边框 <i-switch v-model="showBorder" size="default"></i-switch>
+	        <Col span="1">
+	        	
 	        </Col>
 	    </Row>
         <br>
@@ -70,9 +74,12 @@
     <Table :border="showBorder" stripe :columns="gcsjColumns" :data="gcsjResult" size="small"></Table>
     <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
-            <Page show-elevator :total="total" :current="1" show-total @on-change="dataQueryChangePage" size="small"></Page>
+            <Page no-data-text show-elevator :total="total" :current="1" show-total @on-change="dataQueryChangePage" size="small"></Page>
         </div>
     </div>
+    <BackTop :height="100" :bottom="10" :right="50" size="small">
+        <Icon type="chevron-up" :size="10" class="top"></Icon>
+    </BackTop>
   </div>
 </template>
 
@@ -114,13 +121,14 @@ export default {
         this.xxcxForm.tgsj.push(startDate,endDate);
         /*this.$http.post('test', {
             carData: this.xxcxForm
-        })
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });*/
+        }).then((res)=>{
+            return res.json();
+        }).then((res)=>{
+            this.gcsjResult=res.DATA;
+            this.total=res.TOTAL;
+        }).catch((err)=>{
+            console.log(error.message);
+        })*/
         console.log(this.xxcxForm);
     },
     /*重置表单*/
@@ -163,13 +171,14 @@ export default {
         this.xxcxForm.page=page;
         /*this.$http.post('test', {
             carData: this.xxcxForm
-        })
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });*/
+        }).then((res)=>{
+            return res.json();
+        }).then((res)=>{
+            this.gcsjResult=res.DATA;
+            this.total=res.TOTAL;
+        }).catch((err)=>{
+            console.log(error.message);
+        })*/
         console.log(this.xxcxForm);
     },
 
@@ -310,9 +319,7 @@ export default {
                 xssd: 96,
                 clpp: '福田时代',
                 csys: '黑',
-                tp: 19,
-            },
-            {
+                tp: 19,},{
                 tgsj: '2018-01-29 11:32:00',
                 kkmc: '环长沙西收费站长张高速15公里392米',
                 cp: '湘A79389',
@@ -322,9 +329,7 @@ export default {
                 xssd: 130,
                 clpp: '奔驰',
                 csys: '红',
-                tp: 20,
-            },
-            {
+                tp: 20,},{
                 tgsj: '2018-01-29 11:32:00',
                 kkmc: '环长沙西收费站长张高速15公里392米',
                 cp: '湘A79389',
@@ -334,9 +339,7 @@ export default {
                 xssd: 107,
                 clpp: '福田时代',
                 csys: '白',
-                tp: 21,
-            },
-            {
+                tp: 21,},{
                 tgsj: '2018-01-29 11:32:00',
                 kkmc: '环长沙西收费站长张高速15公里392米',
                 cp: '湘A79389',
@@ -346,9 +349,7 @@ export default {
                 xssd: 119,
                 clpp: '福田时代',
                 csys: '灰',
-                tp: 22,
-            },
-            {
+                tp: 22,},{
                 tgsj: '2018-01-29 11:32:00',
                 kkmc: '环长沙西收费站长张高速15公里392米',
                 cp: '湘A79389',
@@ -358,9 +359,7 @@ export default {
                 xssd: 59,
                 clpp: '福田时代',
                 csys: '灰',
-                tp: 22,
-            },
-            {
+                tp: 22,},{
                 tgsj: '2018-01-29 11:32:00',
                 kkmc: '环长沙西收费站长张高速15公里392米',
                 cp: '湘A79389',
@@ -370,9 +369,7 @@ export default {
                 xssd: 119,
                 clpp: '福田时代',
                 csys: '灰',
-                tp: 22,
-            },
-            {
+                tp: 22,},{
                 tgsj: '2018-01-29 11:32:00',
                 kkmc: '环长沙西收费站长张高速15公里392米',
                 cp: '湘A79389',
@@ -382,9 +379,7 @@ export default {
                 xssd: 59,
                 clpp: '福田时代',
                 csys: '灰',
-                tp: 22,
-            },
-            {
+                tp: 22,},{
                 tgsj: '2018-01-29 11:32:00',
                 kkmc: '环长沙西收费站长张高速15公里392米',
                 cp: '湘A79389',
@@ -394,9 +389,7 @@ export default {
                 xssd: 119,
                 clpp: '福田时代',
                 csys: '灰',
-                tp: 22,
-            },
-            {
+                tp: 22,},{
                 tgsj: '2018-01-29 11:32:00',
                 kkmc: '环长沙西收费站长张高速15公里392米',
                 cp: '湘A79389',
@@ -406,9 +399,7 @@ export default {
                 xssd: 99,
                 clpp: '福田时代',
                 csys: '灰',
-                tp: 22,
-            },
-            {
+                tp: 22,},{
                 tgsj: '2018-01-29 11:32:00',
                 kkmc: '环长沙西收费站长张高速15公里392米',
                 cp: '湘A79389',
@@ -418,8 +409,47 @@ export default {
                 xssd: 121,
                 clpp: '福田时代',
                 csys: '灰',
-                tp: 22,
-            }
+                tp: 22,},{
+                tgsj: '2018-01-29 11:32:00',
+                kkmc: '环长沙西收费站长张高速15公里392米',
+                cp: '湘A79389',
+                cllx: '小型汽车',
+                cxfx: '由东向西',
+                cdh: '2',
+                xssd: 59,
+                clpp: '福田时代',
+                csys: '灰',
+                tp: 22,},{
+                tgsj: '2018-01-29 11:32:00',
+                kkmc: '环长沙西收费站长张高速15公里392米',
+                cp: '湘A79389',
+                cllx: '小型汽车',
+                cxfx: '由东向西',
+                cdh: '2',
+                xssd: 119,
+                clpp: '福田时代',
+                csys: '灰',
+                tp: 22,},{
+                tgsj: '2018-01-29 11:32:00',
+                kkmc: '环长沙西收费站长张高速15公里392米',
+                cp: '湘A79389',
+                cllx: '小型汽车',
+                cxfx: '由东向西',
+                cdh: '2',
+                xssd: 99,
+                clpp: '福田时代',
+                csys: '灰',
+                tp: 22,},{
+                tgsj: '2018-01-29 11:32:00',
+                kkmc: '环长沙西收费站长张高速15公里392米',
+                cp: '湘A79389',
+                cllx: '小型汽车',
+                cxfx: '由东向西',
+                cdh: '2',
+                xssd: 121,
+                clpp: '福田时代',
+                csys: '灰',
+                tp: 22,}
         ]
 
     }
@@ -428,5 +458,11 @@ export default {
 </script>
 
 <style scoped>
-    
+    .top{
+        padding: 10px;
+        background: #2d8cf0;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+    }
 </style>
