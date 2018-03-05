@@ -2,7 +2,7 @@
   <div id="sysManager">
     <Layout>
         <Sider hide-trigger :style="{background: '#fff'}">
-            <Menu active-name="1-1" theme="primary" width="auto" :open-names="['1']" :accordion="true" @on-select="sysManagerNavClick">
+            <Menu :active-name="activeName" theme="primary" width="auto" :open-names="openNames" :accordion="true" @on-select="sysManagerNavClick">
                 <Submenu name="1">
                     <template slot="title">
                         <Icon type="android-person"></Icon>
@@ -50,11 +50,13 @@ export default {
 	      { name: '用户管理' },
 	      { name: '用户信息' }
 	    ],
-        color1:'#E6F7FF',
-        color2:'#FFF',
-        color3:'#FFF',
-        color4:'#FFF',
-        color5:'#FFF',
+      color1:'#E6F7FF',
+      color2:'#FFF',
+      color3:'#FFF',
+      color4:'#FFF',
+      color5:'#FFF',
+      activeName:'1-1',
+      openNames:['2','3'], 
     }
   },
   methods:{

@@ -16,7 +16,7 @@
                       <div class="header-nav" >
                         <ul class="header-nav-ul">
                           <li>
-                            <div @click="carControlClick" style="height:57px">
+                            <div @click="carControl" style="height:57px">
                               <Icon type="model-s" color="#fff"></Icon>
                               &nbsp;
                               <span>车辆查控</span>
@@ -24,7 +24,7 @@
                             <div class="header-nav-sign" v-show="showSign"></div>
                           </li>
                           <li>
-                            <div @click="sysManagerClick" style="height:57px">
+                            <div @click="sysManager" style="height:57px">
                               <Icon type="gear-a" color="#fff"></Icon>
                               &nbsp;
                               <span>系统管理</span>
@@ -47,33 +47,63 @@
                   </Col>
               </Row>    
             </Header>
-            <router-view></router-view>
+            <Layout>
+                <Sider hide-trigger :style="{background: '#fff'}">
+                    <Menu theme="primary" width="auto" :active-name="activeName" :open-names="openNames" :accordion="true" @on-select="homeSiderMenu">
+                        <Submenu :name="item.name" v-for="(item,key) in subMenuItem" :key="key" >
+                            <template slot="title">
+                                <Icon :type="item.icon"></Icon>
+                                {{item.value}}
+                            </template>
+                            <MenuItem :name="child.name" v-for="(child,key) in item.children" :key="key" >&nbsp;{{ child.value }}</MenuItem>
+                        </Submenu>
+                    </Menu>
+                </Sider>
+                <Layout :style="{padding: '0 24px 24px'}">
+                    <Breadcrumb :style="{margin: '20px 0'}">
+                        <BreadcrumbItem v-for="(item,key) in breadcrumbItem" :key="key">{{item.value}}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <Content :style="{padding: '24px', minHeight: '600px', background: '#fff'}">
+                        <router-view></router-view>
+                    </Content>
+                </Layout>
+            </Layout>
         </Layout>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters,mapActions } from 'vuex'
 export default {
   name: 'home',
   data () {
     return {
-      showSign:true,
+      
     }
   },
+  created(){
+    this.$store.dispatch('refreshHome');
+  },
+  computed: {
+    ...mapGetters([
+      'showSign',
+      'openNames',
+      'activeName',
+      'subMenuItem',
+      'breadcrumbItem',
+    ]),
+  },
   methods:{
+    ...mapActions([
+      'homeSiderMenu' ,
+      'carControl' ,
+      'sysManager' ,
+    ]),
     headerPortraitClick(name){
       if("退出"===name){
-          this.$router.push({ path: '/' });
+        this.$router.push({ path: '/' });
       }
-    },
-    carControlClick(){
-      this.$router.push({ path: '/dataQuery' });
-      this.showSign=true;
-    },
-    sysManagerClick(){
-      this.$router.push({ path: '/SysManager' });
-      this.showSign=false;
     }
   }
 }
@@ -122,7 +152,6 @@ export default {
     color: #fff;
 }
 .header-nav-ul li:hover{
-    /*background-color: #40a9ff;*/
     cursor:pointer;
 }
 .header-nav-sign{
