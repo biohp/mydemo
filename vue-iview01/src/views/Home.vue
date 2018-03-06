@@ -21,7 +21,7 @@
                               &nbsp;
                               <span>车辆查控</span>
                             </div>
-                            <div class="header-nav-sign" v-show="showSign"></div>
+                            <div class="header-nav-sign" v-show="true"></div>
                           </li>
                           <li>
                             <div @click="sysManager" style="height:57px">
@@ -29,7 +29,7 @@
                               &nbsp;
                               <span>系统管理</span>
                             </div>
-                            <div class="header-nav-sign" v-show="!showSign"></div>
+                            <div class="header-nav-sign" v-show="false"></div>
                           </li>
                         </ul>
                       </div>
@@ -49,7 +49,7 @@
             </Header>
             <Layout>
                 <Sider hide-trigger :style="{background: '#fff'}">
-                    <Menu theme="primary" width="auto" :active-name="activeName" :open-names="openNames" :accordion="true" @on-select="homeSiderMenu">
+                    <Menu theme="primary" width="auto" active-name="sjcx" :open-names="['gcsj']" :accordion="true" @on-select="homeSiderMenu">
                         <Submenu :name="item.name" v-for="(item,key) in subMenuItem" :key="key" >
                             <template slot="title">
                                 <Icon :type="item.icon"></Icon>
@@ -87,9 +87,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'showSign',
-      'openNames',
-      'activeName',
       'subMenuItem',
       'breadcrumbItem',
     ]),

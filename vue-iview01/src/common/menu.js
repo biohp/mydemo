@@ -80,6 +80,10 @@ const _sysManager = [
     }
 ]
 
+function formatter(data) {
+  return ;
+}
+
 export default {
   clkHeaderNav(payload){
     let showSign = true ;
@@ -152,6 +156,6 @@ export default {
           return {routerPath , breadcrumbItem};
     }
 
-  },
+   },
 
 }

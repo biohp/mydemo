@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from './views/Login.vue'
+import Login from './views/User/Login.vue'
 import Home from './views/Home.vue'
 import DataQuery from './components/CarControl/DataQuery.vue'
 import BayonetInfo from './components/CarControl/BayonetInfo.vue'
