@@ -1,5 +1,5 @@
 <!-- 权限功能管理 -->
-<template>
+<!-- <template>
   <div id="authorityManage">
     <div class="layout">
         <Layout>
@@ -47,4 +47,4 @@ export default {
     ]),
   }
 }
-</script>
+</script> -->

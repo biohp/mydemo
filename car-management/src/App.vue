@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'app',
+  name: 'App',
   data () {
     return {
       
@@ -16,11 +16,6 @@ export default {
 </script>
 
 <style>
-/*#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}*/
 .layout{
     background: #e9eaec;
     position: relative;

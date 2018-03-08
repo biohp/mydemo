@@ -1,1 +1,1 @@
-export const CHANGE_MENU ="CHANGE_MENU"
+export const INIT_MENU ="INIT_MENU"

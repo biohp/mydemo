@@ -1,5 +1,5 @@
 <!-- 用户管理 -->
-<template>
+<!-- <template>
   <div id="adminManage">
     <div class="layout">
         <Layout>
@@ -47,4 +47,4 @@ export default {
     ]),
   }
 }
-</script>
+</script> -->

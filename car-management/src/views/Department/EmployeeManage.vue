@@ -1,5 +1,5 @@
 <!-- 人员管理 -->
-<template>
+<!-- <template>
   <div id="employeeManage">
     <div class="layout">
         <Layout>
@@ -47,4 +47,4 @@ export default {
     ]),
   }
 }
-</script>
+</script> -->

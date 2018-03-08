@@ -1,5 +1,5 @@
 <!-- 机构管理 -->
-<template>
+<!-- <template>
   <div id="departmentManage">
     <div class="layout">
         <Layout>
@@ -47,4 +47,4 @@ export default {
     ]),
   }
 }
-</script>
+</script> -->

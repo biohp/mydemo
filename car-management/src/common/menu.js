@@ -82,98 +82,89 @@ const menuData = [
   }
 ]
 
-function formatter(payload) {
-  let route = payload.route;
-  let showSign = Boolean;
-  let menuItems = [] ;
-  let breadcrumbItem = [];
-  if (route<50){
-    showSign=true;
-    menuItems.push(menuData[0]);
-    switch (route) {
-      case 1 :
-      breadcrumbItem.push(
-        menuData[0].value,
-        menuData[0].children[0].value,
-        menuData[0].children[0].children[0].value
-        );
-      break;
-      case 2 :
-      breadcrumbItem.push(
-        menuData[0].value,
-        menuData[0].children[0].value,
-        menuData[0].children[0].children[1].value
-        );
-      break;
-      case 3 :
-      breadcrumbItem.push(
-        menuData[0].value,
-        menuData[0].children[1].value,
-        menuData[0].children[1].children[0].value
-        );
-      break;
-    }
-  } else if (route>50){
-    showSign=false;
-    menuItems.push(menuData[1]);
-    switch (route) {
-      case 51 :
-      breadcrumbItem.push(
-        menuData[1].value,
-        menuData[1].children[0].value,
-        menuData[1].children[0].children[0].value
-        );
-      break;
-      case 52 :
-      breadcrumbItem.push(
-        menuData[1].value,
-        menuData[1].children[0].value,
-        menuData[1].children[0].children[1].value
-        );
-      break;
-      case 53 :
-      breadcrumbItem.push(
-        menuData[1].value,
-        menuData[1].children[0].value,
-        menuData[1].children[0].children[2].value
-        );
-      break;
-      case 54 :
-      breadcrumbItem.push(
-        menuData[1].value,
-        menuData[1].children[1].value,
-        menuData[1].children[1].children[0].value
-        );
-      break;
-      case 55 :
-      breadcrumbItem.push(
-        menuData[1].value,
-        menuData[1].children[1].value,
-        menuData[1].children[1].children[1].value
-        );
-      break;
-      case 56 :
-      breadcrumbItem.push(
-        menuData[1].value,
-        menuData[1].children[2].value,
-        menuData[1].children[2].children[0].value
-        );
-      break;
-      case 57 :
-      breadcrumbItem.push(
-        menuData[1].value,
-        menuData[1].children[2].value,
-        menuData[1].children[2].children[1].value
-        );
-      break;
-      
-    }
+function getBreadcrumbList(one,two,three) {
+  let breadcrumbList = []
+  const itemOne={
+    name: menuData[one].name,
+    value: menuData[one].value
   }
-  return { showSign , menuItems , breadcrumbItem };
+  const itemTwo={
+    name: menuData[one].children[two].value,
+    value: menuData[one].children[two].value
+  }
+  const itemThree={
+    name: menuData[one].children[two].children[three].value,
+    value: menuData[one].children[two].children[three].value
+  }
+  breadcrumbList.push(itemOne,itemTwo,itemThree)
+  return breadcrumbList
+}
+
+function interpret(payload) {
+  let route = Number
+  let breadcrumbList =[]
+  switch (payload){
+    case 'carQuery' :
+      route = 1 
+      breadcrumbList=getBreadcrumbList(0,0,0)
+      break;
+    case 'carAnalysis' :
+      route = 1
+      breadcrumbList=getBreadcrumbList(0,0,1)
+      break;
+    case 'monitorManage' :
+      route = 1
+      breadcrumbList=getBreadcrumbList(0,1,0)
+      break;
+    case 'adminManage' :
+      route = 2
+      breadcrumbList=getBreadcrumbList(1,0,0)
+      break;
+    case 'roleManage' :
+      route = 2
+      breadcrumbList=getBreadcrumbList(1,0,1)
+      break;
+    case 'authorityManage' :
+      route = 2
+      breadcrumbList=getBreadcrumbList(1,0,2)
+      break;
+    case 'departmentManage' :
+      route = 2
+      breadcrumbList=getBreadcrumbList(1,1,0)
+      break;
+    case 'employeeManage' :
+      route = 2
+      breadcrumbList=getBreadcrumbList(1,1,1)
+      break;
+    case 'dataDictionary' :
+      route = 2
+      breadcrumbList=getBreadcrumbList(1,2,0)
+      break;
+    case 'projectParameter' :
+      route = 2
+      breadcrumbList=getBreadcrumbList(1,2,1)
+      break;
+  }
+  return { route , breadcrumbList }
+}
+
+function formatter(payload) {
+  let route = breadcrumbListroute
+  let showSign = Boolean
+  let menuItems = [] 
+  let breadcrumbList = interpret(payload).breadcrumbList 
+  if (route===1){
+    showSign=true
+    menuItems.push(menuData[0])
+  } else if (route===2){
+    showSign=false
+    menuItems.push(menuData[1])
+  }
+  return { showSign , submenuList , breadcrumbList }
 }
 
 export default {
   getMenuData(payload){
-    return formatter(payload);
+    return formatter(payload)
   }
 }

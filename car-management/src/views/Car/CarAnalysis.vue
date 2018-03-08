@@ -1,5 +1,5 @@
 <!-- 过车数据接入统计 -->
-<template>
+<!-- <template>
   <div id="carAnalysis">
     <div class="layout">
         <Layout>
@@ -47,4 +47,4 @@ export default {
     ]),
   }
 }
-</script>
+</script> -->

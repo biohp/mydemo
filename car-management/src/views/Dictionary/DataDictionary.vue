@@ -1,5 +1,5 @@
 <!-- 数据字典配置 -->
-<template>
+<!-- <template>
   <div id="dataDictionary">
     <div class="layout">
         <Layout>
@@ -47,4 +47,4 @@ export default {
     ]),
   }
 }
-</script>
+</script> -->

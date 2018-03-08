@@ -1,5 +1,5 @@
 <template>
-  <div id="pageHeaderLayout">
+  <div id="page-header-layout">
     <Header class="header">
       <Row>
           <Col span="1">
@@ -34,7 +34,7 @@
           </Col>
           <Col span="1">
               <div class="header-portrait">
-                <Dropdown @on-click="headerPortraitClick">
+                <Dropdown @on-click="onHeaderPortrait">
                     <Avatar style="background-color: #d6e4ff;cursor:pointer;" icon="person" size="large"/>
                     <DropdownMenu slot="list" style="text-align:center" >
                         <DropdownItem name="个人信息">个人信息</DropdownItem>
@@ -49,9 +49,9 @@
 </template>
 
 <script>
-import { mapGetters,mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
-  name: 'pageHeaderLayout',
+  name: 'PageHeaderLayout',
   computed: {
     ...mapGetters([
       'showSign',
@@ -64,7 +64,7 @@ export default {
     onAdminManage(){
       this.$router.push({ path : '/adminManage' })
     },
-    headerPortraitClick(name){
+    onHeaderPortrait(name){
       if("退出"===name){
         this.$router.push({ path: '/' });
       }

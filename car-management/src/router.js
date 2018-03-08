@@ -16,38 +16,63 @@ Vue.use(Router)
 export default new Router({
     routes : [
 	  	{ 
-	  		path: '/', 
+	  		path: '/login', 
 	  		component: Login ,
-	  	},{ 
-	  		path: '/carQuery', 
-	  		component: CarQuery ,
-	  	},{ 
-	  		path: '/carAnalysis', 
-	  		component: CarAnalysis ,
-	  	},{ 
-	  		path: '/monitorManage', 
-	  		component: MonitorManage ,
-	  	},{ 
-	  		path: '/adminManage', 
-	  		component: AdminManage ,
-	  	},{ 
-	  		path: '/roleManage', 
-	  		component: RoleManage ,
-	  	},{ 
-	  		path: '/departmentManage', 
-	  		component: DepartmentManage ,
-	  	},{ 
-	  		path: '/employeeManage', 
-	  		component: EmployeeManage ,
-	  	},{ 
-	  		path: '/authorityManage', 
-	  		component: AuthorityManage ,
-	  	},{ 
-	  		path: '/dataDictionary', 
-	  		component: DataDictionary ,
-	  	},{ 
-	  		path: '/projectParameter', 
-	  		component: ProjectParameter ,
+	  		alias: '/'
+	  	},{
+	  		path : '/vehicle/:open',
+	  		component : CarQuery,
+	  		props : true,
+	  		children : [
+	  			{
+	  				path : 'carQuery',
+	  				component : CarQuery,
+	  				name : 'carQuery'
+	  			},{ 
+			  		path: 'carAnalysis', 
+			  		component: CarAnalysis ,
+			  		name : 'carAnalysis'
+			  	},{ 
+			  		path: 'monitorManage', 
+			  		component: MonitorManage ,
+			  		name : 'monitorManage'
+			  	}
+	  		]
+	  	},{
+	  		path : '/manage/:open',
+	  		component : AdminManage,
+	  		props : true,
+	  		children : [
+	  			{ 
+			  		path: 'adminManage', 
+			  		component: AdminManage ,
+			  		name : 'adminManage'
+			  	},{ 
+			  		path: 'roleManage', 
+			  		component: RoleManage ,
+			  		name : 'roleManage'
+			  	},{ 
+			  		path: 'departmentManage', 
+			  		component: DepartmentManage ,
+			  		name : 'departmentManage'
+			  	},{ 
+			  		path: 'employeeManage', 
+			  		component: EmployeeManage ,
+			  		name : 'employeeManage'
+			  	},{ 
+			  		path: 'authorityManage', 
+			  		component: AuthorityManage ,
+			  		name : 'authorityManage'
+			  	},{ 
+			  		path: 'dataDictionary', 
+			  		component: DataDictionary ,
+			  		name : 'dataDictionary'
+			  	},{ 
+			  		path: 'projectParameter', 
+			  		component: ProjectParameter ,
+			  		name : 'projectParameter'
+			  	}
+	  		]
 	  	}
     ]
 })

@@ -6,7 +6,7 @@
         <div class="form-box">
           <Form ref="formInline" :model="formInline" :rules="ruleInline" >
               <FormItem prop="user">
-                  <Input type="text" v-model="formInline.user" placeholder="用户名" size="large">
+                  <Input type="text" v-model.trim="formInline.user" placeholder="用户名" size="large">
                       <Icon type="ios-person-outline" slot="prepend"></Icon>
                   </Input>
               </FormItem>
@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  name: 'login',
+  name: 'Login',
   data () {
       return {
           formInline: {
@@ -49,7 +49,7 @@ export default {
       handleSubmit(name) {
           if("admin"===this.formInline.user&&"123456"===this.formInline.password){
               this.$Message.success('登录成功!');
-              this.$router.push({ path: '/carQuery' });
+              this.$router.push({ path: '/vehicle/car/carQuery' });
           } else {
               this.$Message.error('登录失败!');
           }

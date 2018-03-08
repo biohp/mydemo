@@ -1,5 +1,5 @@
 <!-- 系统参数配置 -->
-<template>
+<!-- <template>
   <div id="projectParameter">
     <div class="layout">
         <Layout>
@@ -47,4 +47,4 @@ export default {
     ]),
   }
 }
-</script>
+</script> -->

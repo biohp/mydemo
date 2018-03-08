@@ -1,5 +1,5 @@
 <!-- 卡口信息维护 -->
-<template>
+<!-- <template>
   <div id="monitorManage">
     <div class="layout">
         <Layout>
@@ -47,4 +47,4 @@ export default {
     ]),
   }
 }
-</script>
+</script> -->
