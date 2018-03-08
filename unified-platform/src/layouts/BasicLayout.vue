@@ -1,0 +1,183 @@
+<template>
+  <div id="basic-layout">
+    <div class="layout">
+        <Layout>
+            <Header class="header">
+              <Row>
+                  <Col span="1">
+                      <div class="header-logo">
+                        <img src="../assets/jh.png">
+                      </div>
+                  </Col>
+                  <Col span="16">
+                      <div class="header-title">湖南省高警局数据统一接入传输平台</div>
+                  </Col>
+                  <Col span="6">
+                      <div class="header-nav" >
+                        <ul class="header-nav-ul">
+                          <li v-for="(item,key) in headerNavList" :key="key">
+                            <div @click="onHeaderNav(item)" style="height:57px">
+                              <Icon :type="item.icon" color="#fff"></Icon>
+                              &nbsp;
+                              <span>{{item.value}}</span>
+                            </div>
+                            <div class="header-nav-sign" v-show="showSign===item.name?true:false"></div>
+                          </li>
+                        </ul>
+                      </div>
+                  </Col>
+                  <Col span="1">
+                      <div class="header-portrait">
+                        <Dropdown @on-click="onHeaderPortrait">
+                            <Avatar style="background-color: #d6e4ff;cursor:pointer;" icon="person" size="large"/>
+                            <DropdownMenu slot="list" style="text-align:center" >
+                                <DropdownItem name="个人信息">个人信息</DropdownItem>
+                                <DropdownItem name="退出">退 出</DropdownItem>  
+                            </DropdownMenu>
+                        </Dropdown>
+                      </div>
+                  </Col>
+              </Row>    
+            </Header>
+            <Layout>
+                <Sider hide-trigger class="layout-sider">
+                    <Menu theme="primary" width="auto" :active-name="active" :open-names="[open]" :accordion="true" @on-select="onSiderMenu">
+                        <Submenu :name="item.name" v-for="(item,key) in submenuList" :key="key" >
+					        <template slot="title">
+					            <Icon :type="item.icon"></Icon>
+					            {{item.value}}
+					        </template>
+					        <MenuItem :name="child.name" v-for="(child,key) in item.children" :key="key" >&nbsp;{{ child.value }}</MenuItem>
+					    </Submenu>
+                    </Menu>
+                </Sider>
+                <Layout class="layout-layout">
+                    <Breadcrumb class="layout-bread">
+                        <BreadcrumbItem v-for="(item,key) in breadcrumbList.breadcrumbList" :key="key">{{item.value}}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <Content class="layout-content">
+                        <router-view></router-view>
+                    </Content>
+                </Layout>
+            </Layout>
+        </Layout>
+    </div>
+  </div>
+</template>
+<script>
+import { mapGetters } from 'vuex'
+import path from '../utils/path.js'
+export default {
+  name: 'BasicLayout',
+  created(){
+    this.$store.dispatch('initMenu', { name : this.$router.history.current.name });
+    console.log(this.breadcrumbList);
+  },
+  data () {
+    return {
+      open : this.$router.history.current.params.open,
+      active : this.$router.history.current.name,
+    }
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.open = to.params.open
+    this.active = to.name
+    next()
+  },
+  computed: {
+    ...mapGetters([
+      'headerNavList',
+      'showSign',
+      'submenuList',
+      'breadcrumbList'
+    ]),
+  },
+  methods:{
+    onHeaderNav(payload){
+      let name = payload.children[0].children[0].name
+      let path = `/${payload.name}/${payload.children[0].name}/${name}`
+      this.$store.dispatch('initMenu', { name : name })     
+      this.$router.push({ path: path })
+    },
+    onHeaderPortrait(name){
+      if("退出"===name){
+        this.$router.push({ path: '/' });
+      }
+    },
+    onSiderMenu(name){
+      this.$router.push({ path: path.getPath(name).path });
+      this.$store.dispatch('initMenu', { name : name })
+    }
+  }
+}
+</script>
+
+<style scoped>
+.header{
+    background-image: linear-gradient(143deg,#2945cb 20%,#2b83f9 81%,#3a9dff); 
+    min-width: 1000px;
+}
+.header-logo{
+    float: left;
+    position: relative;
+    top: 6px;
+    left: 20px;
+    width: 50px;
+    height:64px;
+}
+.header-logo img{
+    width: 50px;
+    height:47px;
+}
+.header-title{
+    color: #fff;   
+    font-size: 24px;
+    float:left;
+    padding-left: 25px;
+}
+.header-nav{
+    font-size: 15px;
+    width: 420px;
+    float: left;
+}
+.header-portrait{
+    float: left;
+}
+.header-nav-ul li{
+    float:left;
+    width: 150px;
+    height: 64px;
+    text-align: center;
+    color: #fff;
+}
+.header-nav-ul li:hover{
+    cursor:pointer;
+}
+.header-nav-sign{
+    margin: 0 auto;
+    height: 7px;
+    width: 7px;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #fff;
+}
+.layout{
+  background: #e9eaec;
+  position: relative;
+  overflow: hidden;
+}
+.layout-sider{
+  background: #fff;
+}
+.layout-layout{
+  padding: 0 24px 24px;
+}
+.layout-bread{
+  margin: 20px 0 ;
+}
+.layout-content{
+  padding: 24px ;
+  min-height: 600px ; 
+  background: #fff;
+}
+</style>
