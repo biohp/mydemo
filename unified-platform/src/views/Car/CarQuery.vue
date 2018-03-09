@@ -56,15 +56,12 @@
 	    </Form>
 	<div slot="title">
 		<Row>
-	        <Col span="23">
+	        <Col span="24">
 	        	<span>边框&nbsp;&nbsp;&nbsp;</span>
                 <i-switch v-model="showBorder">
                     <span slot="open">开</span>
                     <span slot="close">关</span>
                 </i-switch>
-	        </Col>
-	        <Col span="1">
-	        	
 	        </Col>
 	    </Row>
         <br>
@@ -78,6 +75,15 @@
     <BackTop :height="100" :bottom="10" :right="50" size="small">
         <Icon type="chevron-up" :size="10" class="top"></Icon>
     </BackTop>
+    <Modal
+        v-model="modalCarQuery"
+        title="车辆信息详情"
+        @on-ok="ok"
+        @on-cancel="cancel">
+        <p>Content of dialog</p>
+        <p>Content of dialog</p>
+        <p>Content of dialog</p>
+    </Modal>
   </div>
 </template>
 <script>
@@ -89,11 +95,11 @@ export default {
         const start=new Date();
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 3);
         this.tgsj.push(start,end);
-        /*this.$http.get('uap/kk/queryTjsTree.do')
+        /*this.$http.get('uap/tgs/queryTgsTree.do')
         .then((res)=>{
-            return res.json();
+            return res.data;
         }).then((res)=>{
-            this.gcsjResult=res;
+            this.xzkkTree=res.DATA;
         }).catch((err)=>{
             console.log(error.message);
         })*/
@@ -109,6 +115,7 @@ export default {
                 this.formCarQuery.kkisd.push(arr[i].value);
             }
         } 
+        console.log(arr);
         if(arr.length===0){
             this.xzkkLabel="选择卡口";
         }else{
@@ -124,10 +131,10 @@ export default {
         const startDate=`${start.getFullYear()}-${start.getMonth() + 1}-${start.getDate()} ${start.getHours()}:${start.getMinutes()}:${start.getSeconds()}`;
         const endDate=`${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()} ${end.getHours()}:${end.getMinutes()}:${end.getSeconds()}`;
         this.formCarQuery.tgsj.push(startDate,endDate);
-        /*this.$http.post('uap/passcar/query.do', {
-            carData: this.formCarQuery
-        }).then((res)=>{
-            return res.json();
+        /*this.$http.post('uap/passcar/query.do', 
+            this.formCarQuery
+        ).then((res)=>{
+            return res.data;
         }).then((res)=>{
             this.gcsjResult=res.DATA;
             this.total=res.TOTAL;
@@ -138,7 +145,7 @@ export default {
     },
     /*重置表单*/
     formCarQueryReset(){
-        this.cpdq='全部';
+        this.cpdq='';
         this.cphm='';
         this.tgsj=[];
         const end=new Date();
@@ -166,18 +173,21 @@ export default {
     },
     /*记录详情*/
     show (index) {
-        this.$Modal.confirm({
-            title: '车辆信息',
-            content: `123`
-        })
+    	this.modalCarQuery = true
+    },
+    ok () {
+        this.$Message.info('Clicked ok');
+    },
+    cancel () {
+        this.$Message.info('Clicked cancel');
     },
     /*换页*/
     dataQueryChangePage(page){
         this.formCarQuery.pageNo=page;
-        /*this.$http.post('uap/passcar/query.do', {
-            carData: this.formCarQuery
-        }).then((res)=>{
-            return res.json();
+        /*this.$http.post('uap/passcar/query.do', 
+             this.formCarQuery
+        ).then((res)=>{
+            return res.data;
         }).then((res)=>{
             this.gcsjResult=res.DATA;
             this.total=res.TOTAL;
@@ -190,6 +200,7 @@ export default {
   },
   data () {
     return {
+    	modalCarQuery: false,
         total:90,
     	formCarQuery: {
             hphm: '',//hphm
@@ -201,10 +212,10 @@ export default {
             pageNo:1,//pageNo
             pageSize:10,
         },
-        cpdq:'全部',
+        cpdq:'',
         cphm:'',
         cpdqList: [
-            {value: '全部',label: '全部'},
+            {value: '',label: '全部'},
             {value: '京',label: '京'},{value: '津',label: '津'},{value: '冀',label: '冀'},{value: '晋',label: '晋'},
             {value: '蒙',label: '蒙'},{value: '辽',label: '辽'},{value: '吉',label: '吉'},{value: '黑',label: '黑'},
             {value: '沪',label: '沪'},{value: '苏',label: '苏'},{value: '浙',label: '浙'},{value: '皖',label: '皖'},
@@ -269,8 +280,8 @@ export default {
                 align: 'center',
                 render: (h, params) => {
                     const row = params.row;
-                    const color = row.xssd > 120 ? 'red' : row.xssd < 60 ? 'blue' : 'green';
-                    const text = row.xssd;
+                    const color = row.XSSD > 120 ? 'red' : row.XSSD < 60 ? 'blue' : 'green';
+                    const text = row.XSSD;
                     return h('Tag', {
                         props: {
                             type: 'dot',
@@ -304,7 +315,49 @@ export default {
 	            }
 	        }
         ],
-        gcsjResult: []
+        gcsjResult: [
+        	{
+                TGSJ: '2018-01-29 11:32:00',
+                KKMC: '环长沙西收费站长张高速15公里392米',
+                HPHM: '湘A79389',
+                HPZL_NAME: '小型汽车',
+                CXFX_NAME: '由西向东',
+                CDBH: '2',
+                XSSD: 130,
+                CLPP: '奔驰',
+                CSYS_NAME: '白',
+                TPLJ1: 20,},{
+                TGSJ: '2018-01-29 11:32:00',
+                KKMC: '环长沙西收费站长张高速15公里392米',
+                HPHM: '湘A79389',
+                HPZL_NAME: '小型汽车',
+                CXFX_NAME: '由西向东',
+                CDBH: '2',
+                XSSD: 120,
+                CLPP: '奔驰',
+                CSYS_NAME: '红',
+                TPLJ1: 20,},{
+                TGSJ: '2018-01-29 11:32:00',
+                KKMC: '环长沙西收费站长张高速15公里392米',
+                HPHM: '湘A79389',
+                HPZL_NAME: '小型汽车',
+                CXFX_NAME: '由西向东',
+                CDBH: '2',
+                XSSD: 99,
+                CLPP: '奔驰',
+                CSYS_NAME: '黑',
+                TPLJ1: 20,},{
+                TGSJ: '2018-01-29 11:32:00',
+                KKMC: '环长沙西收费站长张高速15公里392米',
+                HPHM: '湘A79389',
+                HPZL_NAME: '小型汽车',
+                CXFX_NAME: '由西向东',
+                CDBH: '2',
+                XSSD: 59,
+                CLPP: '奔驰',
+                CSYS_NAME: '黑',
+                TPLJ1: 20,},
+        ]
 
     }
   }

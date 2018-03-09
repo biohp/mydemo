@@ -162,7 +162,7 @@ export default {
     border-bottom: 7px solid #fff;
 }
 .layout{
-  background: #e9eaec;
+  background: #f5f7f9;
   position: relative;
   overflow: hidden;
 }
@@ -170,14 +170,15 @@ export default {
   background: #fff;
 }
 .layout-layout{
-  padding: 0 24px 24px;
+  padding: 0 15px 15px;
 }
 .layout-bread{
-  margin: 20px 0 ;
+  margin: 10px 0 ;
 }
 .layout-content{
-  padding: 24px ;
-  min-height: 600px ; 
+  padding: 24px;
+  min-height: 660px ; 
+  /*background: #E6F7FF;*/
   background: #fff;
 }
 </style>
