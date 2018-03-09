@@ -71,7 +71,6 @@ export default {
   name: 'BasicLayout',
   created(){
     this.$store.dispatch('initMenu', { name : this.$router.history.current.name });
-    console.log(this.breadcrumbList);
   },
   data () {
     return {

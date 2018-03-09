@@ -66,7 +66,7 @@
 	    </Row>
         <br>
 	</div>
-    <Table :border="showBorder" stripe :columns="gcsjColumns" :data="gcsjResult" size="small"></Table>
+    <Table :border="showBorder" stripe :columns="columnsCarQuery" :data="carQueryResult" size="small"></Table>
     <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
             <Page no-data-text show-elevator :total="total" :current="1" show-total @on-change="dataQueryChangePage" size="small"></Page>
@@ -78,11 +78,45 @@
     <Modal
         v-model="modalCarQuery"
         title="车辆信息详情"
-        @on-ok="ok"
-        @on-cancel="cancel">
-        <p>Content of dialog</p>
-        <p>Content of dialog</p>
-        <p>Content of dialog</p>
+        @on-cancel="cancel"
+        width="90%">
+        <Row :gutter="16">
+	        <Col span="19">
+	        	<Card style="width:100%" :padding="0" :bordered="false">
+	                <img :src="modalCarData.TPLJ1" style="width:100%;height:500px;">
+	            </Card>
+	        </Col>
+	        <Col span="5">
+	            <Card style="width:100%" :padding="10">
+                <p slot="title" >基础信息</p>
+                <div slot="extra" style="margin-top:-2px">
+                    <ButtonGroup shape="circle" size="small">
+				        <Button type="primary" @click="prevModalCarData">
+				            <Icon type="chevron-left"></Icon>
+				            上一条
+				        </Button>
+				        <Button type="primary" @click="nextModalCarData">
+				            下一条
+				            <Icon type="chevron-right"></Icon>
+				        </Button>
+				    </ButtonGroup>
+                </div>
+                <ul >
+                	<li><p>车牌号码：&nbsp;&nbsp;<span>{{modalCarData.HPHM}}</span></p></li>
+                	<li><p>车辆类型：&nbsp;&nbsp;<span>{{modalCarData.HPZL_NAME}}</span></p></li>
+                	<li><p>车辆品牌：&nbsp;&nbsp;<span>{{modalCarData.CLPP}}</span></p></li>
+                	<li><p>车身颜色：&nbsp;&nbsp;<span>{{modalCarData.CSYS_NAME}}</span></p></li>
+                	<li><p>卡口名称：&nbsp;&nbsp;<span>{{modalCarData.KKMC}}</span></p></li>
+                	<li><p>车行方向：&nbsp;&nbsp;<span>{{modalCarData.CXFX_NAME}}</span></p></li>
+                	<li><p>通过时间：&nbsp;&nbsp;<span>{{modalCarData.TGSJ}}</span></p></li>
+                </ul>
+                <img :src="modalCarData.TPLJ1" style="width:100%;height:200px;">
+            </Card>
+	        </Col>
+	    </Row>
+	    <div slot="footer">
+            <Button type="ghost" shape="circle" icon="arrow-down-a" @click="downCarDataImg">下载图片</Button>
+        </div>
     </Modal>
   </div>
 </template>
@@ -115,7 +149,6 @@ export default {
                 this.formCarQuery.kkisd.push(arr[i].value);
             }
         } 
-        console.log(arr);
         if(arr.length===0){
             this.xzkkLabel="选择卡口";
         }else{
@@ -136,7 +169,7 @@ export default {
         ).then((res)=>{
             return res.data;
         }).then((res)=>{
-            this.gcsjResult=res.DATA;
+            this.carQueryResult=res.DATA;
             this.total=res.TOTAL;
         }).catch((err)=>{
             console.log(error.message);
@@ -173,13 +206,32 @@ export default {
     },
     /*记录详情*/
     show (index) {
+    	this.modalCarDataIndex=index
     	this.modalCarQuery = true
-    },
-    ok () {
-        this.$Message.info('Clicked ok');
+    	this.modalCarData = this.carQueryResult[this.modalCarDataIndex]
     },
     cancel () {
-        this.$Message.info('Clicked cancel');
+        this.$Message.info('详情页面已关闭');
+    },
+    prevModalCarData(){
+    	if(this.modalCarDataIndex===0){
+    		this.$Message.info('没有上一个了！');
+    	}else {
+    		this.modalCarDataIndex--
+    		this.modalCarData = this.carQueryResult[this.modalCarDataIndex]
+    	}
+    	
+    },
+    nextModalCarData(){
+    	if(this.modalCarDataIndex===this.carQueryResult.length-1){
+    		this.$Message.info('没有下一个了！');
+    	}else {
+    		this.modalCarDataIndex++
+    		this.modalCarData = this.carQueryResult[this.modalCarDataIndex]
+    	}
+    },
+    downCarDataImg(){
+
     },
     /*换页*/
     dataQueryChangePage(page){
@@ -189,7 +241,7 @@ export default {
         ).then((res)=>{
             return res.data;
         }).then((res)=>{
-            this.gcsjResult=res.DATA;
+            this.carQueryResult=res.DATA;
             this.total=res.TOTAL;
         }).catch((err)=>{
             console.log(error.message);
@@ -200,6 +252,19 @@ export default {
   },
   data () {
     return {
+    	modalCarDataIndex:Number,
+    	modalCarData:{
+    		CDBH:'',
+			CLPP:'',
+			CSYS_NAME:'',
+			CXFX_NAME:'',
+			HPHM:'',
+			HPZL_NAME:'',
+			KKMC:'',
+			TGSJ:'',
+			TPLJ1:'',
+			XSSD:Number
+    	},
     	modalCarQuery: false,
         total:90,
     	formCarQuery: {
@@ -266,7 +331,7 @@ export default {
         ],
         showBorder: false,
         showCondition:true,
-	    gcsjColumns: [
+	    columnsCarQuery: [
             {title: '通过时间',key: 'TGSJ',width: 170,align: 'center'},//TGSJ
             {title: '卡口名称',key: 'KKMC',width: 274,align: 'center'},//KKMC
             {title: '车牌',key: 'HPHM',width: 100,align: 'center'},//HPHM
@@ -315,18 +380,18 @@ export default {
 	            }
 	        }
         ],
-        gcsjResult: [
+        carQueryResult: [
         	{
                 TGSJ: '2018-01-29 11:32:00',
                 KKMC: '环长沙西收费站长张高速15公里392米',
                 HPHM: '湘A79389',
-                HPZL_NAME: '小型汽车',
+                HPZL_NAME: '大型汽车',
                 CXFX_NAME: '由西向东',
                 CDBH: '2',
                 XSSD: 130,
                 CLPP: '奔驰',
                 CSYS_NAME: '白',
-                TPLJ1: 20,},{
+                TPLJ1: 'http://pic.58pic.com/58pic/13/71/22/35T58PICrEk_1024.jpg',},{
                 TGSJ: '2018-01-29 11:32:00',
                 KKMC: '环长沙西收费站长张高速15公里392米',
                 HPHM: '湘A79389',
@@ -336,7 +401,7 @@ export default {
                 XSSD: 120,
                 CLPP: '奔驰',
                 CSYS_NAME: '红',
-                TPLJ1: 20,},{
+                TPLJ1: 'http://img.taopic.com/uploads/allimg/130316/235102-13031616344950.jpg',},{
                 TGSJ: '2018-01-29 11:32:00',
                 KKMC: '环长沙西收费站长张高速15公里392米',
                 HPHM: '湘A79389',
@@ -346,7 +411,7 @@ export default {
                 XSSD: 99,
                 CLPP: '奔驰',
                 CSYS_NAME: '黑',
-                TPLJ1: 20,},{
+                TPLJ1: 'http://pic1.16pic.com/00/07/66/16pic_766152_b.jpg',},{
                 TGSJ: '2018-01-29 11:32:00',
                 KKMC: '环长沙西收费站长张高速15公里392米',
                 HPHM: '湘A79389',
@@ -356,12 +421,25 @@ export default {
                 XSSD: 59,
                 CLPP: '奔驰',
                 CSYS_NAME: '黑',
-                TPLJ1: 20,},
+                TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',},
         ]
 
     }
   }
 }
 </script>
+
+<style scoped>
+	ul>li{
+		padding-bottom: 10px;
+	}
+	ul>li>p{
+		color: #000;
+	}
+	ul>li>p>span{
+		color: #595959;
+	}
+	
+</style>
 
 
