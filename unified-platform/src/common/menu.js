@@ -41,7 +41,7 @@ const menuData = [
         icon : 'android-person',
         children : [
           {
-            name : 'adminManage',
+            name : 'userManage',
             value : '用户管理',
           },{
             name : 'roleManage',
@@ -110,7 +110,7 @@ const vehicle = [
   'monitorManage'
   ]
 const manage = [
-  'adminManage',
+  'userManage',
   'roleManage',
   'authorityManage',
   'departmentManage',
@@ -144,7 +144,7 @@ function formatterBreadcrumb(payload) {
     case 'monitorManage':
       breadcrumbList.push(_breadcrumbList[0],_breadcrumbList[4],_breadcrumbList[5])
       break;
-    case 'adminManage':
+    case 'userManage':
       breadcrumbList.push(_breadcrumbList[6],_breadcrumbList[7],_breadcrumbList[8])
       break;
     case 'roleManage':

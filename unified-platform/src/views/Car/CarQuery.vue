@@ -4,7 +4,7 @@
     <Form :model="formCarQuery" label-position="right" :label-width="80" inline>
 	        <FormItem label="车牌：">
 	        	<Input v-model="cphm" placeholder="输入车牌号码">
-			        <Select v-model="cpdq" slot="prepend" style="width: 60px">
+			        <Select v-model="cpdq" slot="prepend" style="width: 60px" placeholder="全部">
                         <Option v-for="item in cpdqList" :value="item.value" :key="item.value">{{ item.label }}</Option>
 			        </Select>
 			    </Input>
@@ -144,7 +144,7 @@ export default {
         let arr = [];
         arr = this.$refs.xzkkTree.getCheckedNodes();
         this.formCarQuery.kkisd=[];
-        for( let i = 0, len=arr.length; i < len; i++) {
+        for( let i = 0, len = arr.length; i < len; i++) {
             if(arr[i].children===undefined){
                 this.formCarQuery.kkisd.push(arr[i].value);
             }

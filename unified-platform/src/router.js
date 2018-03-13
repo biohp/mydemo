@@ -5,7 +5,7 @@ import BasicLayout from './layouts/BasicLayout'
 import CarQuery from './views/Car/CarQuery'
 import CarAnalysis from './views/Car/CarAnalysis'
 import MonitorManage from './views/Monitor/MonitorManage'
-import AdminManage from './views/Authority/AdminManage'
+import UserManage from './views/Authority/UserManage'
 import RoleManage from './views/Authority/RoleManage'
 import AuthorityManage from './views/Authority/AuthorityManage'
 import DepartmentManage from './views/Department/DepartmentManage'
@@ -43,9 +43,9 @@ export default new Router({
 	  		component : BasicLayout,
 	  		children : [
 	  			{ 
-			  		path: 'adminManage', 
-			  		component: AdminManage ,
-			  		name : 'adminManage'
+			  		path: 'userManage', 
+			  		component: UserManage ,
+			  		name : 'userManage'
 			  	},{ 
 			  		path: 'roleManage', 
 			  		component: RoleManage ,
