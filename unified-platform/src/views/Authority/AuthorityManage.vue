@@ -97,13 +97,14 @@ export default {
   		this.modalDeleteAuthority = false;
   	},
   	changePage () {
-
+  		//axios
   	},
   	resetSaveAuthorityForm () {
 
   	},
   	saveAuthority () {
   		this.modalSaveAuthority = false;
+  		//axios
   	},
   	cancelModalSaveAuthority () {
   		this.modalSaveAuthority = false;
@@ -115,17 +116,19 @@ export default {
         })*/
         this.modalSaveAuthority = true;
   		this.modalSaveAuthorityTitle = '编辑权限';
+  		//axios
     },
     remove (index) {
         /*this.data6.splice(index, 1);*/
         this.modalDeleteAuthority = true;
+        //axios
     },
   	openAddAuthorityModal () {
   		this.modalSaveAuthority = true;
   		this.modalSaveAuthorityTitle = '新增权限';
   	},
   	onFormSearchAuthority () {
-  		
+  		//axios
   	},
   },
   data () {

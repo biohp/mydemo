@@ -7,12 +7,12 @@
           <Form ref="formInline" :model="formInline" :rules="ruleInline" >
               <FormItem prop="user">
                   <Input type="text" v-model.trim="formInline.user" placeholder="用户名" size="large">
-                      <Icon type="ios-person-outline" slot="prepend"></Icon>
+                      <Icon type="person" slot="prepend"></Icon>
                   </Input>
               </FormItem>
               <FormItem prop="password">
                   <Input type="password" v-model="formInline.password" placeholder="密码" size="large" @on-enter="handleSubmit('formInline')">
-                      <Icon type="ios-locked-outline" slot="prepend"></Icon>
+                      <Icon type="locked" slot="prepend"></Icon>
                   </Input>
               </FormItem>
               <FormItem>
