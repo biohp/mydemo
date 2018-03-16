@@ -37,7 +37,7 @@
                     @on-enter="queryUsername"
                     @on-click="queryUsername"></Input>
             </div>
-            <Card style="background:#E6F7FF">
+            <Card style="background:#e8e8e8">
                 <p slot="title">
                     <Icon type="person-stalker"></Icon>
                     &nbsp;机构用户
@@ -54,7 +54,7 @@
             </Card>
         </Col>
         <Col span="16">
-            <Card style="background:#E6F7FF">
+            <Card style="background:#e8e8e8">
                 <p slot="title">
                     <Icon type="person"></Icon>
                     &nbsp;用户信息

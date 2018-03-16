@@ -1,7 +1,7 @@
 <!-- 角色管理 -->
 <template>
   <div id="role-manage">
-    <Form :model="formSearchRole" label-position="right" :label-width="100" inline >
+    <!-- <Form :model="formSearchRole" label-position="right" :label-width="100" inline >
         <FormItem label="角色名称：">
             <Input v-model.trim="formSearchRole.rolename" placeholder="输入角色名" :clearable="true"></Input>
         </FormItem>
@@ -11,10 +11,25 @@
         <FormItem>
             <Button type="primary" shape="circle" icon="ios-search" style="margin-left: -50px" @click="onFormSearchRole">查询</Button>
         </FormItem>
-    </Form>
-    <Card style="background:#E6F7FF">
+    </Form> -->
+    <div style="margin-bottom:20px;text-align:center;">
+        <!-- <Input 
+            v-model="username" 
+            icon="ios-search-strong" 
+            placeholder="搜索用户名..." 
+            style="width: 50%" 
+            @on-enter="queryUsername"
+            @on-click="queryUsername"></Input> -->
+            <Input  
+            size="large"
+            icon="ios-search-strong" 
+            placeholder="角色查询" 
+            style="width: 25%"></Input>
+
+    </div>
+    <Card style="background:#e8e8e8">
         <p slot="title">
-            <Icon type="person"></Icon>
+            <Icon type="android-contact"></Icon>
             &nbsp;角色信息
         </p>
         <div slot="extra" style="margin-top:-5px">
@@ -22,12 +37,12 @@
                 <Button type="primary" shape="circle" icon="plus-round" @click="openAddRoleModal"></Button>
             </Tooltip>
         </div>
-        <Table border :columns="columnsRole" :data="dataRole"></Table>
+        <Table :stripe="true" border :columns="columnsRole" :data="dataRole"></Table>
     </Card>
 
     <Modal v-model="modalSaveRole" width="450" :mask-closable="false" @on-cancel="cancelModalSaveRole">
         <p slot="header" style="color:#1890ff;text-align:center">
-            <Icon type="person"></Icon>
+            <Icon type="android-contact"></Icon>
             <span>&nbsp;{{modalSaveRoleTitle}}</span>
         </p>
         <Form :model="formSaveRole" label-position="right" :label-width="80" style="padding-left:20px;padding-right:25px;">
@@ -37,9 +52,9 @@
             <FormItem label="角色描述：">
                 <Input v-model="formSaveRole.remarks" type="textarea" placeholder="输入描述信息..."></Input>
             </FormItem>
-            <FormItem label="权限：">
+            <FormItem label="角色权限：">
                 <Poptip placement="right" width="300">
-			        <Button type="ghost" shape="circle" icon="unlocked">{{authorityLabel}}</Button>
+			        <Button type="success" shape="circle" icon="unlocked">{{authorityLabel}}</Button>
 			        <div slot="content">
 						<Tree :data="authorityList" show-checkbox></Tree>
 			        </div>
@@ -145,7 +160,7 @@ export default {
             {name: 'Joe Black'},
             {name: 'Jon Snow'}
         ],
-    	authorityLabel:'选择权限',
+    	authorityLabel:'添加权限',
     	authorityList: [
             {
                 title: 'parent 1',
@@ -217,7 +232,7 @@ export default {
                     return h('div', [
                         h('Button', {
                             props: {
-                                type: 'primary',
+                                type: 'success',
                                 size: 'small'
                             },
                             on: {
@@ -252,7 +267,7 @@ export default {
                         }, '编辑'),
                         h('Button', {
                             props: {
-                                type: 'error',
+                                type: 'warning',
                                 size: 'small'
                             },
                             on: {

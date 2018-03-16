@@ -29,7 +29,7 @@
                   <Col span="1">
                       <div class="header-portrait">
                         <Dropdown @on-click="onHeaderPortrait">
-                            <Avatar style="background-color: #d6e4ff;cursor:pointer;" icon="person" size="large"/>
+                            <Avatar style="background-color: #d6e4ff;cursor:pointer;" src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1479054987,566479454&fm=27&gp=0.jpg" size="large"/>
                             <DropdownMenu slot="list" style="text-align:center" >
                                 <DropdownItem name="个人信息">个人信息</DropdownItem>
                                 <DropdownItem name="退出">退 出</DropdownItem>  
@@ -74,8 +74,8 @@ export default {
   },
   data () {
     return {
-      open : this.$router.history.current.params.open,
-      active : this.$router.history.current.name,
+      open: this.$router.history.current.params.open,
+      active: this.$router.history.current.name
     }
   },
   beforeRouteUpdate (to, from, next) {
@@ -169,15 +169,15 @@ export default {
   background: #fff;
 }
 .layout-layout{
+  background: #f0f5ff;
   padding: 0 15px 15px;
 }
 .layout-bread{
-  margin: 10px 0 ;
+  margin-top: 20px;
 }
 .layout-content{
-  padding: 24px;
+  padding: 14px 5px 0 5px;
   min-height: 660px ; 
-  /*background: #E6F7FF;*/
-  background: #fff;
+  background: #f0f5ff;
 }
 </style>

@@ -15,7 +15,7 @@
             <Button type="primary" shape="circle" icon="ios-search" style="margin-left: -50px" @click="onFormSearchAuthority">查询</Button>
         </FormItem>
     </Form>
-    <Card style="background:#E6F7FF">
+    <Card style="background:#e8e8e8">
         <p slot="title">
             <Icon type="unlocked"></Icon>
             &nbsp;权限管理
@@ -25,7 +25,7 @@
                 <Button type="primary" shape="circle" icon="plus-round" @click="openAddAuthorityModal"></Button>
             </Tooltip>
         </div>
-        <Table border :columns="columnsAuthority" :data="dataAuthority"></Table>
+        <Table :stripe="true" border :columns="columnsAuthority" :data="dataAuthority"></Table>
         <div style="margin: 10px;overflow: hidden">
 	        <div style="float: right;">
 	            <Page :total="100" :current="1" @on-change="changePage" show-total></Page>
@@ -178,7 +178,7 @@ export default {
                 align: 'center'
             },
             {
-                title: 'Action',
+                title: '操作',
                 key: 'action',
                 width: 150,
                 align: 'center',
@@ -200,7 +200,7 @@ export default {
                         }, '编辑'),
                         h('Button', {
                             props: {
-                                type: 'error',
+                                type: 'warning',
                                 size: 'small'
                             },
                             on: {

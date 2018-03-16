@@ -2,84 +2,274 @@
 <template>
   <div id="car-query">
     <Form :model="formCarQuery" label-position="right" :label-width="80" inline>
-	        <FormItem label="车牌：">
-	        	<Input v-model="cphm" placeholder="输入车牌号码">
-			        <Select v-model="cpdq" slot="prepend" style="width: 60px" placeholder="全部">
-                        <Option v-for="item in cpdqList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-			        </Select>
-			    </Input>
-	        </FormItem>
-	        <FormItem label="时间段：">
-	        	<DatePicker type="datetimerange" placeholder="选择时间段" style="width: 280px" v-model="tgsj"></DatePicker>
-	        </FormItem>
-	        <FormItem label="车辆类型：">
-	            <Select v-model="formCarQuery.hpzl" clearable style="width:200px">
-			        <Option v-for="item in cllxList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-			    </Select>
-	        </FormItem>
-	        <FormItem label="选择卡口：" v-show="!showCondition">
-	            <Poptip placement="left" width="400">
-			        <Button type="ghost" shape="circle" icon="android-pin">{{xzkkLabel}}</Button>
-			        <div slot="content">
-						<Tree ref="xzkkTree" :data="xzkkTree" multiple show-checkbox @on-check-change="xzkkChecked"></Tree>
-			        </div>
-			    </Poptip>
-	        </FormItem>
-	        <FormItem label="车道号：" v-show="!showCondition" style="margin-right: 40px">
-	            <CheckboxGroup v-model="formCarQuery.cdbh">
-			        <Checkbox label="1">&nbsp;1</Checkbox>&nbsp;
-			        <Checkbox label="2">&nbsp;2</Checkbox>&nbsp;
-			        <Checkbox label="3">&nbsp;3</Checkbox>&nbsp;
-			        <Checkbox label="4">&nbsp;4</Checkbox>&nbsp;
-			        <Checkbox label="5">&nbsp;5</Checkbox>&nbsp;
-			        <Checkbox label="6">&nbsp;6</Checkbox>&nbsp;
-			        <Checkbox label="7">&nbsp;7</Checkbox>&nbsp;
-			        <Checkbox label="8">&nbsp;8</Checkbox>&nbsp;
-			    </CheckboxGroup>
-	        </FormItem>
-	        <FormItem label="车行方向："  v-show="!showCondition" style="margin-right: 33px">
-	            <CheckboxGroup v-model="formCarQuery.cxfx">
-			        <Checkbox label="1">&nbsp;上行</Checkbox>&nbsp;
-			        <Checkbox label="2">&nbsp;下行</Checkbox>&nbsp;
-			    </CheckboxGroup>
-	        </FormItem>
-	        <FormItem>
-	        	<Button type="primary" shape="circle" icon="ios-search" style="margin-left: -40px" @click="formCarQuerySubmit">查询</Button>
-	            <Button type="ghost" shape="circle" style="margin-left: 4px" @click="formCarQueryReset">重置</Button>
-	            <Tooltip content="更多条件" placement="top">
-		            <Button type="ghost" shape="circle" icon="ios-arrow-down" style="margin-left: 4px" @click="openCondition" v-show="showCondition"></Button>
-		        </Tooltip> 
-		        <Tooltip content="收起" placement="top">
-		            <Button type="primary" shape="circle" icon="ios-arrow-up" style="margin-left: 4px" @click="closeCondition" v-show="!showCondition"></Button>
-		        </Tooltip>
-	        </FormItem>
+      <Row>
+        <Col span="7">
+          <FormItem label="时间段：">
+            <DatePicker type="datetimerange" placeholder="选择时间段" style="width: 280px" v-model="tgsj"></DatePicker>
+          </FormItem>
+        </Col>
+        <Col span="6">
+          <FormItem label="车牌：">
+            <Input v-model="cphm" placeholder="输入车牌号码">
+              <Select v-model="cpdq" slot="prepend" style="width: 60px" placeholder="全部">
+                  <Option v-for="item in cpdqList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+              </Select>
+            </Input>
+          </FormItem>
+        </Col>
+        
+        <Col span="6">
+          <FormItem label="车辆类型：">
+              <Select v-model="formCarQuery.hpzl" clearable style="width:200px">
+                  <Option v-for="item in cllxList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+              </Select>
+          </FormItem>
+        </Col>
+        
+        <Col span="5" v-if="!showCondition">
+          <FormItem label="选择卡口：" >
+              <Poptip placement="left" width="400">
+                <Button type="success" shape="circle" icon="android-pin">{{xzkkLabel}}</Button>
+                <div slot="content">
+                  <Tree ref="xzkkTree" :data="xzkkTree" multiple show-checkbox @on-check-change="xzkkChecked"></Tree>
+                </div>
+              </Poptip>
+          </FormItem>
+        </Col>
+        
+        <Col span="9" v-if="!showCondition">
+          <FormItem label="车道号：">
+              <CheckboxGroup v-model="formCarQuery.cdbh">
+                  <Checkbox label="1">&nbsp;1</Checkbox>&nbsp;
+                  <Checkbox label="2">&nbsp;2</Checkbox>&nbsp;
+                  <Checkbox label="3">&nbsp;3</Checkbox>&nbsp;
+                  <Checkbox label="4">&nbsp;4</Checkbox>&nbsp;
+                  <Checkbox label="5">&nbsp;5</Checkbox>&nbsp;
+                  <Checkbox label="6">&nbsp;6</Checkbox>&nbsp;
+                  <Checkbox label="7">&nbsp;7</Checkbox>&nbsp;
+                  <Checkbox label="8">&nbsp;8</Checkbox>&nbsp;
+              </CheckboxGroup>
+          </FormItem>
+        </Col>
+
+        <Col span="5" v-if="!showCondition">
+          <FormItem label="车行方向：">
+              <CheckboxGroup v-model="formCarQuery.cxfx">
+                  <Checkbox label="1">&nbsp;上行</Checkbox>&nbsp;
+                  <Checkbox label="2">&nbsp;下行</Checkbox>&nbsp;
+              </CheckboxGroup>
+          </FormItem>
+        </Col>
+
+        <Col span="5">
+          <FormItem>
+            <Button type="primary" shape="circle" icon="ios-search" @click="formCarQuerySubmit">查询</Button> 
+            <Tooltip content="重置条件" placement="top">
+                <Button type="ghost" shape="circle" icon="ios-loop-strong" style="margin-left: 4px" @click="formCarQueryReset">
+                </Button>
+            </Tooltip>
+            <Tooltip content="更多条件" placement="top">
+                <Button type="ghost" shape="circle" icon="ios-arrow-down" style="margin-left: 4px" @click="openCondition" v-show="showCondition"></Button>
+            </Tooltip> 
+            <Tooltip content="收起" placement="top">
+                <Button type="primary" shape="circle" icon="ios-arrow-up" style="margin-left: 4px" @click="closeCondition" v-show="!showCondition"></Button>
+            </Tooltip>
+          </FormItem>
+        </Col>
+      </Row>   
 	    </Form>
-	<div slot="title">
-		<Row>
-	        <Col span="24">
-	        	<span>边框&nbsp;&nbsp;&nbsp;</span>
-                <i-switch v-model="showBorder">
-                    <span slot="open">开</span>
-                    <span slot="close">关</span>
-                </i-switch>
-	        </Col>
-	    </Row>
-        <br>
-	</div>
-    <Table :border="showBorder" stripe :columns="columnsCarQuery" :data="carQueryResult" size="small"></Table>
-    <div style="margin: 10px;overflow: hidden">
-        <div style="float: right;">
-            <Page no-data-text show-elevator :total="total" :current="1" show-total @on-change="dataQueryChangePage" size="small"></Page>
-        </div>
-    </div>
+    <Card :bordered="false" style="background:#e8e8e8">
+        <Tabs>
+            <TabPane label="数据缩略图" icon="image">
+                <!-- <Row :gutter="22" v-if="carQueryResult.length===0?false:true" >
+                  <Col span="4" class="tab-col" v-for="(item,key) in carQueryResult" :key="key">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img :src="item.TPLJ1" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>{{item.KKMC}}</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="primary" size="small" @click="show(key)">{{item.HPHM}}</Button>
+                            <span>{{item.TGSJ}}</span>
+                        </div>
+                      </Card>
+                  </Col>
+                </Row> -->
+                <Row :gutter="22" >
+                  <Col span="4" class="tab-col">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img src="../../assets/gc01.jpg" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>环长沙西收费站长张高速15公里392米</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="warning" size="small">湘A79389</Button>
+                            <span>2018-01-29 11:32:00</span>
+                        </div>
+                      </Card>
+                  </Col>
+                  <Col span="4" class="tab-col">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img src="../../assets/gc02.jpg" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>环长沙西收费站长张高速15公里392米</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="primary" size="small">湘A79389</Button>
+                            <span>2018-01-29 11:32:00</span>
+                        </div>
+                      </Card>
+                  </Col>
+                  <Col span="4" class="tab-col">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img src="../../assets/gc03.jpg" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>环长沙西收费站长张高速15公里392米</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="primary" size="small">湘A79389</Button>
+                            <span>2018-01-29 11:32:00</span>
+                        </div>
+                      </Card>
+                  </Col>
+                  <Col span="4" class="tab-col">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img src="../../assets/gc04.jpg" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>环长沙西收费站长张高速15公里392米</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="primary" size="small">湘A79389</Button>
+                            <span>2018-01-29 11:32:00</span>
+                        </div>
+                      </Card>
+                  </Col>
+                  <Col span="4" class="tab-col">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img src="../../assets/gc05.jpg" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>环长沙西收费站长张高速15公里392米</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="primary" size="small">湘A79389</Button>
+                            <span>2018-01-29 11:32:00</span>
+                        </div>
+                      </Card>
+                  </Col>
+                  <Col span="4" class="tab-col">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img src="../../assets/gc06.jpg" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>环长沙西收费站长张高速15公里392米</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="primary" size="small">湘A79389</Button>
+                            <span>2018-01-29 11:32:00</span>
+                        </div>
+                      </Card>
+                  </Col>
+                  <Col span="4" class="tab-col">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img src="../../assets/gc07.jpg" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>环长沙西收费站长张高速15公里392米</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="primary" size="small">湘A79389</Button>
+                            <span>2018-01-29 11:32:00</span>
+                        </div>
+                      </Card>
+                  </Col>
+                  <Col span="4" class="tab-col">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img src="../../assets/gc08.jpg" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>环长沙西收费站长张高速15公里392米</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="warning" size="small">湘A79389</Button>
+                            <span>2018-01-29 11:32:00</span>
+                        </div>
+                      </Card>
+                  </Col>
+                  <Col span="4" class="tab-col">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img src="../../assets/gc09.jpg" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>环长沙西收费站长张高速15公里392米</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="primary" size="small">湘A79389</Button>
+                            <span>2018-01-29 11:32:00</span>
+                        </div>
+                      </Card>
+                  </Col>
+                  <Col span="4" class="tab-col">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img src="../../assets/gc10.jpg" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>环长沙西收费站长张高速15公里392米</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="primary" size="small">湘A79389</Button>
+                            <span>2018-01-29 11:32:00</span>
+                        </div>
+                      </Card>
+                  </Col>
+                  <Col span="4" class="tab-col">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img src="../../assets/gc11.jpg" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>环长沙西收费站长张高速15公里392米</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="primary" size="small">湘A79389</Button>
+                            <span>2018-01-29 11:32:00</span>
+                        </div>
+                      </Card>
+                  </Col>
+                  <Col span="4" class="tab-col">
+                      <Card class="tab-card" :padding="0" :bordered="false">
+                        <img src="../../assets/gc12.jpg" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>环长沙西收费站长张高速15公里392米</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="primary" size="small">湘A79389</Button>
+                            <span>2018-01-29 11:32:00</span>
+                        </div>
+                      </Card>
+                  </Col>
+                </Row> 
+                <div style="margin: 10px;overflow: hidden">
+                    <div style="float: right;padding-bottom:2px;">
+                        <Page no-data-text show-elevator :total="total" :current="1" show-total @on-change="dataQueryChangePage" size="small"></Page>
+                    </div>
+                </div>
+            </TabPane>
+            <TabPane label="数据列表" icon="navicon-round">
+                <Table :border="true" stripe :columns="columnsCarQuery" :data="carQueryResult" size="small"></Table>
+                <div style="margin: 10px;overflow: hidden">
+                    <div style="float: right;padding-bottom:2px;">
+                        <Page no-data-text show-elevator :total="total" :current="1" show-total @on-change="dataQueryChangePage" size="small"></Page>
+                    </div>
+                </div>
+            </TabPane>
+        </Tabs>
+    </Card>
+
     <BackTop :height="100" :bottom="10" :right="50" size="small">
         <Icon type="chevron-up" :size="10" class="top"></Icon>
     </BackTop>
     <Modal
         v-model="modalCarQuery"
-        title="车辆信息详情"
         @on-cancel="cancel"
-        width="90%">
+        width="90%"
+        >
+        <p slot="header" style="text-align:center">
+            <Icon type="android-car"></Icon>
+            <span>&nbsp;车辆信息详情</span>
+        </p>
         <Row :gutter="16">
 	        <Col span="19">
 	        	<Card style="width:100%" :padding="0" :bordered="false">
@@ -87,35 +277,35 @@
 	            </Card>
 	        </Col>
 	        <Col span="5">
-	            <Card style="width:100%" :padding="10">
-                <p slot="title" >基础信息</p>
-                <div slot="extra" style="margin-top:-2px">
-                    <ButtonGroup shape="circle" size="small">
-				        <Button type="primary" @click="prevModalCarData">
-				            <Icon type="chevron-left"></Icon>
-				            上一条
-				        </Button>
-				        <Button type="primary" @click="nextModalCarData">
-				            下一条
-				            <Icon type="chevron-right"></Icon>
-				        </Button>
-				    </ButtonGroup>
-                </div>
-                <ul >
-                	<li><p>车牌号码：&nbsp;&nbsp;<span>{{modalCarData.HPHM}}</span></p></li>
-                	<li><p>车辆类型：&nbsp;&nbsp;<span>{{modalCarData.HPZL_NAME}}</span></p></li>
-                	<li><p>车辆品牌：&nbsp;&nbsp;<span>{{modalCarData.CLPP}}</span></p></li>
-                	<li><p>车身颜色：&nbsp;&nbsp;<span>{{modalCarData.CSYS_NAME}}</span></p></li>
-                	<li><p>卡口名称：&nbsp;&nbsp;<span>{{modalCarData.KKMC}}</span></p></li>
-                	<li><p>车行方向：&nbsp;&nbsp;<span>{{modalCarData.CXFX_NAME}}</span></p></li>
-                	<li><p>通过时间：&nbsp;&nbsp;<span>{{modalCarData.TGSJ}}</span></p></li>
-                </ul>
-                <img :src="modalCarData.TPLJ1" style="width:100%;height:200px;">
-            </Card>
+	            <Card style="width:100%;background:#e8e8e8" :padding="10" >
+                    <p slot="title" >基础信息</p>
+                    <div slot="extra" style="margin-top:-2px">
+                        <ButtonGroup shape="circle" size="small">
+    				        <Button type="primary" @click="prevModalCarData">
+    				            <Icon type="chevron-left"></Icon>
+    				            上一条
+    				        </Button>
+    				        <Button type="primary" @click="nextModalCarData">
+    				            下一条
+    				            <Icon type="chevron-right"></Icon>
+    				        </Button>
+    				    </ButtonGroup>
+                    </div>
+                    <ul>
+                    	<li class="modal-li"><p>车牌号码：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.HPHM}}</span></p></li>
+                    	<li class="modal-li"><p>车辆类型：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.HPZL_NAME}}</span></p></li>
+                    	<li class="modal-li"><p>车辆品牌：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.CLPP}}</span></p></li>
+                    	<li class="modal-li"><p>车身颜色：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.CSYS_NAME}}</span></p></li>
+                    	<li class="modal-li"><p>卡口名称：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.KKMC}}</span></p></li>
+                    	<li class="modal-li"><p>车行方向：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.CXFX_NAME}}</span></p></li>
+                    	<li class="modal-li"><p>通过时间：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.TGSJ}}</span></p></li>
+                    </ul>
+                    <img :src="modalCarData.TPLJ1" style="width:100%;height:200px;">
+                </Card>
 	        </Col>
 	    </Row>
 	    <div slot="footer">
-            <Button type="ghost" shape="circle" icon="arrow-down-a" @click="downCarDataImg">下载图片</Button>
+            <Button type="success" shape="circle" icon="arrow-down-a" @click="downCarDataImg">下载图片</Button>
         </div>
     </Modal>
   </div>
@@ -206,6 +396,7 @@ export default {
     },
     /*记录详情*/
     show (index) {
+      console.log(index);
     	this.modalCarDataIndex=index
     	this.modalCarQuery = true
     	this.modalCarData = this.carQueryResult[this.modalCarDataIndex]
@@ -329,7 +520,6 @@ export default {
                 ]
             }
         ],
-        showBorder: false,
         showCondition:true,
 	    columnsCarQuery: [
             {title: '通过时间',key: 'TGSJ',width: 170,align: 'center'},//TGSJ
@@ -421,7 +611,87 @@ export default {
                 XSSD: 59,
                 CLPP: '奔驰',
                 CSYS_NAME: '黑',
-                TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',},
+                TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',},{
+                TGSJ: '2018-01-29 11:32:00',
+                KKMC: '环长沙西收费站长张高速15公里392米',
+                HPHM: '湘A79389',
+                HPZL_NAME: '小型汽车',
+                CXFX_NAME: '由西向东',
+                CDBH: '2',
+                XSSD: 120,
+                CLPP: '奔驰',
+                CSYS_NAME: '红',
+                TPLJ1: 'http://img.taopic.com/uploads/allimg/130316/235102-13031616344950.jpg',},{
+                TGSJ: '2018-01-29 11:32:00',
+                KKMC: '环长沙西收费站长张高速15公里392米',
+                HPHM: '湘A79389',
+                HPZL_NAME: '小型汽车',
+                CXFX_NAME: '由西向东',
+                CDBH: '2',
+                XSSD: 99,
+                CLPP: '奔驰',
+                CSYS_NAME: '黑',
+                TPLJ1: 'http://pic1.16pic.com/00/07/66/16pic_766152_b.jpg',},{
+                TGSJ: '2018-01-29 11:32:00',
+                KKMC: '环长沙西收费站长张高速15公里392米',
+                HPHM: '湘A79389',
+                HPZL_NAME: '小型汽车',
+                CXFX_NAME: '由西向东',
+                CDBH: '2',
+                XSSD: 59,
+                CLPP: '奔驰',
+                CSYS_NAME: '黑',
+                TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',},{
+                TGSJ: '2018-01-29 11:32:00',
+                KKMC: '环长沙西收费站长张高速15公里392米',
+                HPHM: '湘A79389',
+                HPZL_NAME: '小型汽车',
+                CXFX_NAME: '由西向东',
+                CDBH: '2',
+                XSSD: 99,
+                CLPP: '奔驰',
+                CSYS_NAME: '黑',
+                TPLJ1: 'http://pic1.16pic.com/00/07/66/16pic_766152_b.jpg',},{
+                TGSJ: '2018-01-29 11:32:00',
+                KKMC: '环长沙西收费站长张高速15公里392米',
+                HPHM: '湘A79389',
+                HPZL_NAME: '小型汽车',
+                CXFX_NAME: '由西向东',
+                CDBH: '2',
+                XSSD: 59,
+                CLPP: '奔驰',
+                CSYS_NAME: '黑',
+                TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',},{
+                TGSJ: '2018-01-29 11:32:00',
+                KKMC: '环长沙西收费站长张高速15公里392米',
+                HPHM: '湘A79389',
+                HPZL_NAME: '小型汽车',
+                CXFX_NAME: '由西向东',
+                CDBH: '2',
+                XSSD: 120,
+                CLPP: '奔驰',
+                CSYS_NAME: '红',
+                TPLJ1: 'http://img.taopic.com/uploads/allimg/130316/235102-13031616344950.jpg',},{
+                TGSJ: '2018-01-29 11:32:00',
+                KKMC: '环长沙西收费站长张高速15公里392米',
+                HPHM: '湘A79389',
+                HPZL_NAME: '小型汽车',
+                CXFX_NAME: '由西向东',
+                CDBH: '2',
+                XSSD: 99,
+                CLPP: '奔驰',
+                CSYS_NAME: '黑',
+                TPLJ1: 'http://pic1.16pic.com/00/07/66/16pic_766152_b.jpg',},{
+                TGSJ: '2018-01-29 11:32:00',
+                KKMC: '环长沙西收费站长张高速15公里392米',
+                HPHM: '湘A79389',
+                HPZL_NAME: '小型汽车',
+                CXFX_NAME: '由西向东',
+                CDBH: '2',
+                XSSD: 59,
+                CLPP: '奔驰',
+                CSYS_NAME: '黑',
+                TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',}
         ]
 
     }
@@ -430,14 +700,30 @@ export default {
 </script>
 
 <style scoped>
-	ul>li{
+    .tab-col{
+        margin-bottom:22px;
+    }
+    .tab-card{
+        width:200px;
+    }
+    .tab-img{
+        width:200px;
+        height:140px;
+    }
+    .tab-img-title{
+        text-align:center;
+        padding:0 10px;
+    }
+    .tab-img-content{
+        padding:0 5px 6px 5px;
+        font-size: 12px;
+    }
+	.modal-li{
 		padding-bottom: 10px;
+        color: #262626;
 	}
-	ul>li>p{
-		color: #000;
-	}
-	ul>li>p>span{
-		color: #595959;
+	.modal-span{
+		color: #030852;
 	}
 	
 </style>

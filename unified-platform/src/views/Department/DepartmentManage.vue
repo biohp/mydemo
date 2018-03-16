@@ -3,7 +3,7 @@
   <div id="department-manage">
     <Row :gutter="24">
         <Col span="7">
-            <Card style="background:#E6F7FF">
+            <Card style="background:#e8e8e8">
                 <p slot="title">
                     <Icon type="person-stalker"></Icon>
                     &nbsp;机构管理
@@ -23,12 +23,12 @@
             </Card>
         </Col>
         <Col span="17">
-            <Card style="background:#E6F7FF">
+            <Card style="background:#e8e8e8">
                 <Tabs>
 			        <TabPane label="机构信息" icon="briefcase">
 			        	<Form label-position="right" inline :label-width="90" style="padding-left:20px;padding-right:25px;">
 			        		<FormItem v-for="(item,key) in deptInfo" :label="item.label" :key="key">
-				            	<p style="width:100px;color:#1890ff">{{item.value}}</p>
+				            	<p style="width:100px;color:#030852">{{item.value}}</p>
 				            </FormItem>
 				        </Form>
 			        </TabPane>
