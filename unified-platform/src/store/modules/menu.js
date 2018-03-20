@@ -30,10 +30,10 @@ const actions = {
 // mutations
 const mutations = {
   [INIT_MENU] (state,data) {
-    state.headerNavList = data.menuList.menuData,
-    state.showSign = data.menuList.showSign,
-    state.submenuList = data.menuList.submenuList[0].children,
-    state.breadcrumbList = data.breadcrumbList
+    state.headerNavList = data.menuList.menuData;
+    state.showSign = data.menuList.showSign;
+    state.submenuList = data.menuList.submenuList[0].children;
+    state.breadcrumbList = data.breadcrumbList;
   }
 }
 

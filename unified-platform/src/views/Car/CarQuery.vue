@@ -21,7 +21,7 @@
         <Col span="6">
           <FormItem label="车辆类型：">
               <Select v-model="formCarQuery.hpzl" clearable style="width:200px">
-                  <Option v-for="item in cllxList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                  <Option v-for="(item,key) in cllxList" :value="item.DM" :key="key">{{ item.DMSM }}</Option>
               </Select>
           </FormItem>
         </Col>
@@ -292,13 +292,13 @@
     				    </ButtonGroup>
                     </div>
                     <ul>
-                    	<li class="modal-li"><p>车牌号码：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.HPHM}}</span></p></li>
-                    	<li class="modal-li"><p>车辆类型：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.HPZL_NAME}}</span></p></li>
-                    	<li class="modal-li"><p>车辆品牌：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.CLPP}}</span></p></li>
-                    	<li class="modal-li"><p>车身颜色：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.CSYS_NAME}}</span></p></li>
-                    	<li class="modal-li"><p>卡口名称：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.KKMC}}</span></p></li>
-                    	<li class="modal-li"><p>车行方向：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.CXFX_NAME}}</span></p></li>
-                    	<li class="modal-li"><p>通过时间：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.TGSJ}}</span></p></li>
+                    	<li class="modal-li">车牌号码：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.HPHM}}</span></li>
+                    	<li class="modal-li">车辆类型：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.HPZL_NAME}}</span></li>
+                    	<li class="modal-li">车辆品牌：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.CLPP}}</span></li>
+                    	<li class="modal-li">车身颜色：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.CSYS_NAME}}</span></li>
+                    	<li class="modal-li">卡口名称：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.KKMC}}</span></li>
+                    	<li class="modal-li">车行方向：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.CXFX_NAME}}</span></li>
+                    	<li class="modal-li">通过时间：&nbsp;&nbsp;<span class="modal-span">{{modalCarData.TGSJ}}</span></li>
                     </ul>
                     <img :src="modalCarData.TPLJ1" style="width:100%;height:200px;">
                 </Card>
@@ -324,6 +324,14 @@ export default {
             return res.data;
         }).then((res)=>{
             this.xzkkTree=res.DATA;
+        }).catch((err)=>{
+            console.log(error.message);
+        })*/
+        /*this.$http.get('queryItgsCode.do?dmlb=261006')
+        .then((res)=>{
+            return res.data;
+        }).then((res)=>{
+            this.cllxList=res.DATA;
         }).catch((err)=>{
             console.log(error.message);
         })*/
@@ -445,82 +453,82 @@ export default {
     return {
     	modalCarDataIndex:Number,
     	modalCarData:{
-    		CDBH:'',
-			CLPP:'',
-			CSYS_NAME:'',
-			CXFX_NAME:'',
-			HPHM:'',
-			HPZL_NAME:'',
-			KKMC:'',
-			TGSJ:'',
-			TPLJ1:'',
-			XSSD:Number
+      	CDBH:'',
+  			CLPP:'',
+  			CSYS_NAME:'',
+  			CXFX_NAME:'',
+  			HPHM:'',
+  			HPZL_NAME:'',
+  			KKMC:'',
+  			TGSJ:'',
+  			TPLJ1:'',
+  			XSSD:Number
     	},
     	modalCarQuery: false,
         total:90,
     	formCarQuery: {
-            hphm: '',//hphm
-            tgsj: [],
-            hpzl: '',//hpzl
-            kkisd:[],//kkisd
-            cdbh:[],//cdbh
-            cxfx:[],
-            pageNo:1,//pageNo
-            pageSize:10,
+          hphm: '',//hphm
+          tgsj: [],
+          hpzl: '',//hpzl
+          kkisd:[],//kkisd
+          cdbh:[],//cdbh
+          cxfx:[],
+          pageNo:1,//pageNo
+          pageSize:10,
+      },
+      cpdq:'',
+      cphm:'',
+      cpdqList: [
+          {value: '',label: '全部'},
+          {value: '京',label: '京'},{value: '津',label: '津'},{value: '冀',label: '冀'},{value: '晋',label: '晋'},
+          {value: '蒙',label: '蒙'},{value: '辽',label: '辽'},{value: '吉',label: '吉'},{value: '黑',label: '黑'},
+          {value: '沪',label: '沪'},{value: '苏',label: '苏'},{value: '浙',label: '浙'},{value: '皖',label: '皖'},
+          {value: '闽',label: '闽'},{value: '赣',label: '赣'},{value: '鲁',label: '鲁'},{value: '豫',label: '豫'},
+          {value: '鄂',label: '鄂'},{value: '湘',label: '湘'},{value: '粤',label: '粤'},{value: '桂',label: '桂'},
+          {value: '琼',label: '琼'},{value: '陕',label: '陕'},{value: '甘',label: '甘'},{value: '青',label: '青'},
+          {value: '宁',label: '宁'},{value: '新',label: '新'},{value: '渝',label: '渝'},{value: '川',label: '川'},
+          {value: '黔',label: '黔'},{value: '滇',label: '滇'},{value: '藏',label: '藏'}
+      ],
+      tgsj:[],
+      cllxList: [
+        {
+            value: '1',
+            label: '小型汽车'
         },
-        cpdq:'',
-        cphm:'',
-        cpdqList: [
-            {value: '',label: '全部'},
-            {value: '京',label: '京'},{value: '津',label: '津'},{value: '冀',label: '冀'},{value: '晋',label: '晋'},
-            {value: '蒙',label: '蒙'},{value: '辽',label: '辽'},{value: '吉',label: '吉'},{value: '黑',label: '黑'},
-            {value: '沪',label: '沪'},{value: '苏',label: '苏'},{value: '浙',label: '浙'},{value: '皖',label: '皖'},
-            {value: '闽',label: '闽'},{value: '赣',label: '赣'},{value: '鲁',label: '鲁'},{value: '豫',label: '豫'},
-            {value: '鄂',label: '鄂'},{value: '湘',label: '湘'},{value: '粤',label: '粤'},{value: '桂',label: '桂'},
-            {value: '琼',label: '琼'},{value: '陕',label: '陕'},{value: '甘',label: '甘'},{value: '青',label: '青'},
-            {value: '宁',label: '宁'},{value: '新',label: '新'},{value: '渝',label: '渝'},{value: '川',label: '川'},
-            {value: '黔',label: '黔'},{value: '滇',label: '滇'},{value: '藏',label: '藏'}
-        ],
-        tgsj:[],
-        cllxList: [
-	        {
-	            value: '1',
-	            label: '小型汽车'
-	        },
-	        {
-	            value: '2',
-	            label: '大型汽车'
-	        },
+        {
+            value: '2',
+            label: '大型汽车'
+        },
 	    ],
-        xzkkLabel:'选择卡口',
+      xzkkLabel:'选择卡口',
 	    xzkkTree: [
-            {
-                title: 'parent 1',
-                value:'一级',
-                children: [
-                    {
-                        title: 'parent 1-1',
-                        value:'二级1',
-                        
-                    },
-                    {
-                        title: 'parent 1-2',
-                        value:'二级2',
-                        children: [
-                            {
-                                title: 'leaf 1-2-1',
-                                value:'三级3',
-                            },
-                            {
-                                title: 'leaf 1-2-1',
-                                value:'三级4',
-                            }
-                        ]
-                    }
-                ]
-            }
-        ],
-        showCondition:true,
+          {
+              title: 'parent 1',
+              value:'一级',
+              children: [
+                  {
+                      title: 'parent 1-1',
+                      value:'二级1',
+                      
+                  },
+                  {
+                      title: 'parent 1-2',
+                      value:'二级2',
+                      children: [
+                          {
+                              title: 'leaf 1-2-1',
+                              value:'三级3',
+                          },
+                          {
+                              title: 'leaf 1-2-1',
+                              value:'三级4',
+                          }
+                      ]
+                  }
+              ]
+          }
+      ],
+      showCondition:true,
 	    columnsCarQuery: [
             {title: '通过时间',key: 'TGSJ',width: 170,align: 'center'},//TGSJ
             {title: '卡口名称',key: 'KKMC',width: 274,align: 'center'},//KKMC
