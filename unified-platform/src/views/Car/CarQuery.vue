@@ -12,7 +12,7 @@
           <FormItem label="车牌：">
             <Input v-model="cphm" placeholder="输入车牌号码">
               <Select v-model="cpdq" slot="prepend" style="width: 60px" placeholder="全部">
-                  <Option v-for="item in cpdqList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                  <Option v-for="(item, key) in cpdqList" :value="item.value" :key="key">{{ item.label }}</Option>
               </Select>
             </Input>
           </FormItem>
@@ -21,7 +21,7 @@
         <Col span="6">
           <FormItem label="车辆类型：">
               <Select v-model="formCarQuery.hpzl" clearable style="width:200px">
-                  <Option v-for="(item,key) in cllxList" :value="item.DM" :key="key">{{ item.DMSM }}</Option>
+                  <Option v-for="(item, key) in cllxList" :value="item.DM" :key="key">{{ item.DMSM }}</Option>
               </Select>
           </FormItem>
         </Col>
@@ -492,12 +492,12 @@ export default {
       tgsj:[],
       cllxList: [
         {
-            value: '1',
-            label: '小型汽车'
+            DM: '1',
+            DMSM: '小型汽车'
         },
         {
-            value: '2',
-            label: '大型汽车'
+            DM: '2',
+            DMSM: '大型汽车'
         },
 	    ],
       xzkkLabel:'选择卡口',

@@ -2,14 +2,22 @@
 <template>
   <div id="admin-manage">
     <div class="input-first">
-            <Input 
-            v-model="user" 
-            size="large"
-            icon="ios-search-strong" 
-            placeholder="用户查询" 
-            style="width: 400px"
-            @on-enter="queryUser"
-            @on-click="queryUser"></Input>
+        <Row>
+            <Col span="8" offset="8">
+                <Input 
+                    v-model.trim="form.input"
+                    size="large" 
+                    placeholder="查询..." 
+                    @on-enter="queryUser">
+                    <Select v-model="form.select" slot="prepend" style="width: 80px">
+                        <Option value="1">用户名</Option>
+                        <Option value="2">机构</Option>
+                        <Option value="3">姓名</Option>
+                    </Select>
+                    <Button slot="append" icon="android-search" @click="queryUser"></Button>
+                </Input> 
+            </Col>
+        </Row>      
     </div>
     <Card class="card-box">
         <p slot="title">
@@ -26,8 +34,7 @@
             <div style="float: right;">
                 <Page 
                     :total="page.total" 
-                    :current="page.current"
-                    :page-size="page.size" 
+                    :current="page.current" 
                     @on-change="pageChange" 
                     show-total
                     no-data-text 
@@ -116,7 +123,7 @@
             <span>&nbsp;{{modal.title}}</span>
         </p>
         <div style="text-align:center">
-            <Poptip v-for="(item, key) in roleList" :key="key" trigger="hover" title="备注" :content="item.remarks">
+            <Poptip v-for="(item, key) in userRole" :key="key" trigger="hover" title="备注" :content="item.remarks">
                 <Tag type="dot" color="green">{{ item.label }}</Tag>
             </Poptip>
         </div>
@@ -129,127 +136,15 @@
 
 <script>
 import password from '../../utils/password.js'
-import { initTree } from '../../utils/tree.js'
+import { deptTree } from '../../utils/tree.js'
 export default {
   name: 'AdminManage',
-  created() {
-    //axios()
-    /*this.$http.get('uap/tgs/queryTgsTree.do')
-        .then((res)=>{
-            return res.data;
-        }).then((res)=>{
-            this.departmentList=res.DATA;
-            this.departmentUserList='';
-            this.dataUserAuthority='';
-        }).catch((err)=>{
-            console.log(error.message);
-        })*/
-    this.page.total = this.dataUser.length;  
-  },
-  methods: {
-    //重置表单
-    utilReset() {
-        this.formSaveUser = {
-            user: '',
-            dept: '',
-            name: '',
-            pwd: '',
-            ip: '',
-            role: []
-        };
-        this.dept.title = '选择机构';
-        this.dept.list = initTree(this.dept.list, this.dept.title);
-    },
-    utilEdit(index) {
-        this.formSaveUser = {
-            user: this.dataUser[index].user,
-            dept: this.dataUser[index].dept,
-            name: this.dataUser[index].name,
-            ip: this.dataUser[index].ip,
-            pwd: '',
-            role: this.dataUser[index].role 
-        } 
-        this.dept.title = this.formSaveUser.dept;
-        this.dept.list = initTree(this.dept.list, this.dept.title);      
-    },
-    //查询用户
-    queryUser() {
-        /*this.$http.get('uap/tgs/queryTgsTree.do')
-        .then((res)=>{
-            return res.data;
-        }).then((res)=>{
-            this.xzkkTree=res.DATA;
-        }).catch((err)=>{
-            console.log(error.message);
-        })*/
-    },
-    //打开模态框
-    modalAdd() {
-        this.utilReset();
-        this.modal.visible.save = true;
-        this.modal.title = '新增用户';
-    },
-    modalEdit(index) {
-        this.modal.title = '编辑用户';
-        this.utilEdit(index);
-        this.modal.visible.save = true;
-    },
-    modalDelete(index) {
-        this.modal.visible.del = true;
-        this.modal.title = '删除用户';
-    },
-    modalShow(index) {
-        this.modal.visible.show = true;
-        this.modal.title = '用户角色';
-
-    },
-    //关闭模态框
-    modalCloseSave() {
-        this.modal.visible.save = false;
-        this.$Message.warning('本次修改已撤销！');
-        this.utilReset();
-    },
-    saveUser() {
-        //axios()
-        this.modal.visible.save = false;
-        this.$Message.success('保存成功');
-    },
-    resetForm() {
-        this.utilReset();
-    },
-    delUser() {
-        //axios()
-        this.modal.visible.del = false;
-        this.$Message.success('删除成功'); 
-    },
-    modalCloseShow() {
-        this.modal.visible.show = false;
-    },
-    //选择机构
-    selectDept(data) {
-        if(data.length!==0){
-            this.dept.title = data[0].title;
-            this.formSaveUser.dept = data[0].value;
-        }else {
-            this.dept.title = '选择机构';
-            this.formSaveUser.dept = '';
-        }
-    },
-    //换页
-    pageChange(val) {
-        this.page.current = val;
-    },
-    //监控密码强度
-    pwdChange(){
-        //百分比和颜色(Percent,Status)
-        let ps = password.getPercentStatus(this.formSaveUser.pwd);
-        this.pwdPercent = ps.passwordPercent;
-        this.pwdStatus = ps.passwordStatus;
-    }
-  },
   data () {
     return {
-        user: '',
+        form: {
+            input: '',
+            select: '1'
+        },
         columnsUser: [
             {
                 title: '用户名',
@@ -260,28 +155,13 @@ export default {
                 title: '所属机构',
                 key: 'dept',
                 align: 'center',
-                filters: [
-                    {
-                        label: '长沙支队',
-                        value: '长沙支队'
-                    },
-                    {
-                        label: '株洲支队',
-                        value: '株洲支队'
-                    },
-                    {
-                        label: '天元支队',
-                        value: '天元支队'
-                    }
-                ],
-                filterMethod (value, row) {
-                    return row.dept.indexOf(value) > -1;
-                }
+                sortable: true
             },
             {
                 title: '姓名',
                 key: 'name',
-                align: 'center'
+                align: 'center',
+                sortable: true
             },
             {
                 title: 'IP地址',
@@ -344,13 +224,27 @@ export default {
                 }
             }
         ],
-        dataUser: [
+        dataUser: [ 
             {
                 user: '662366',
                 dept: '长沙支队',
                 name: '张三',
                 ip: '',
-                role: ['1','2']
+                role: ['3','4']
+            },
+            {
+                user: '662366',
+                dept: '浏阳支队',
+                name: '王五',
+                ip: '',
+                role: ['4','1']
+            },
+            {
+                user: '662366',
+                dept: '浏阳支队',
+                name: '王五',
+                ip: '',
+                role: ['4','1']
             },
             {
                 user: '662366',
@@ -365,11 +259,10 @@ export default {
                 name: '王五',
                 ip: '',
                 role: ['4','1']
-            }    
+            }     
         ],
         page: {
             current: 1,
-            size: 10,
             total: 0
         },
         modal: {
@@ -436,6 +329,7 @@ export default {
                 remarks: ''
             }
         ],
+        userRole: [],
         formSaveUser: {
             user: '',
             dept: '',
@@ -445,7 +339,146 @@ export default {
             role:[]
         },
         pwdPercent:0,
-        pwdStatus : 'wrong'	
+        pwdStatus : 'wrong' 
+    }
+  },
+  created() {
+    //axios()
+    /*this.$http.get('uap/tgs/queryTgsTree.do')
+        .then((res)=>{
+            return res.data;
+        }).then((res)=>{
+            this.departmentList=res.DATA;
+            this.departmentUserList='';
+            this.dataUserAuthority='';
+        }).catch((err)=>{
+            console.log(error.message);
+        })*/
+    this.page.total = this.dataUser.length;  
+  },
+  methods: {
+    //重置表单
+    utilReset() {
+        this.formSaveUser = {
+            user: '',
+            dept: '',
+            name: '',
+            pwd: '',
+            ip: '',
+            role: []
+        };
+        this.dept.title = '选择机构';
+        this.dept.list = deptTree(this.dept.list, this.dept.title);
+        this.pwdPercent = 0;
+    },
+    utilEdit(index) {
+        this.formSaveUser = {
+            user: this.dataUser[index].user,
+            dept: this.dataUser[index].dept,
+            name: this.dataUser[index].name,
+            ip: this.dataUser[index].ip,
+            pwd: '',
+            role: this.dataUser[index].role 
+        } 
+        this.dept.title = this.formSaveUser.dept;
+        this.dept.list = deptTree(this.dept.list, this.dept.title);      
+    },
+    //查询用户
+    queryUser() {
+        let form = {
+            user: '',
+            dept: '',
+            name: ''
+        }
+        let flag = this.form.select;
+        if (flag === '1') {
+            form.user = this.form.input;
+        } else if (flag === '2') {
+            form.dept = this.form.input;
+        } else if (flag === '3') {
+            form.name = this.form.input;
+        }
+        console.log(form);
+        /*this.$http.get('uap/tgs/queryTgsTree.do')
+        .then((res)=>{
+            return res.data;
+        }).then((res)=>{
+            this.xzkkTree=res.DATA;
+        }).catch((err)=>{
+            console.log(error.message);
+        })*/
+    },
+    //打开模态框
+    modalAdd() {
+        this.utilReset();
+        this.modal.visible.save = true;
+        this.modal.title = '新增用户';
+    },
+    modalEdit(index) {
+        this.modal.title = '编辑用户';
+        this.utilEdit(index);
+        this.modal.visible.save = true;
+    },
+    modalDelete(index) {
+        this.modal.visible.del = true;
+        this.modal.title = '删除用户';
+    },
+    modalShow(index) {
+        this.modal.visible.show = true;
+        this.modal.title = '用户角色';
+        let arr = this.roleList;
+        this.userRole = [];
+        this.dataUser[index].role.map( item => {
+            for (let i = 0; i < arr.length; i++) {
+                if (item === arr[i].value) {
+                    this.userRole.push(arr[i]);
+                }
+            }
+            return item;
+        });
+    },
+    //关闭模态框
+    modalCloseSave() {
+        this.modal.visible.save = false;
+        this.$Message.warning('本次修改已撤销！');
+        this.utilReset();
+    },
+    saveUser() {
+        //axios()
+        this.modal.visible.save = false;
+        this.$Message.success('保存成功');
+    },
+    resetForm() {
+        this.utilReset();
+    },
+    delUser() {
+        //axios()
+        this.modal.visible.del = false;
+        this.$Message.success('删除成功'); 
+    },
+    modalCloseShow() {
+        this.modal.visible.show = false;
+    },
+    //选择机构
+    selectDept(data) {
+        if(data.length!==0){
+            this.dept.title = data[0].title;
+            this.formSaveUser.dept = data[0].value;
+        }else {
+            this.dept.title = '选择机构';
+            this.formSaveUser.dept = '';
+        }
+    },
+    //换页
+    pageChange(val) {
+        this.page.current = val;
+    },
+    //监控密码强度
+    pwdChange(){
+        //百分比和颜色(Percent,Status)
+        let ps = password.getPercentStatus(this.formSaveUser.pwd);
+        this.pwdPercent = ps.passwordPercent;
+        this.pwdStatus = ps.passwordStatus;
     }
   }
 }
@@ -454,7 +487,6 @@ export default {
 <style scoped>
   .input-first{
     margin-bottom: 20px;
-    text-align: center;
   }
   .card-box{
     background: #e8e8e8;

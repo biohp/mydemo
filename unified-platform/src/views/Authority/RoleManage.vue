@@ -1,227 +1,117 @@
 <!-- 角色管理 -->
 <template>
   <div id="role-manage">
-    <!-- <Form :model="formSearchRole" label-position="right" :label-width="100" inline >
-        <FormItem label="角色名称：">
-            <Input v-model.trim="formSearchRole.rolename" placeholder="输入角色名" :clearable="true"></Input>
-        </FormItem>
-        <FormItem label="角色用户：">
-            <Input v-model.trim="formSearchRole.roleUser" placeholder="输入用户名" :clearable="true"></Input>
-        </FormItem>
-        <FormItem>
-            <Button type="primary" shape="circle" icon="ios-search" style="margin-left: -50px" @click="onFormSearchRole">查询</Button>
-        </FormItem>
-    </Form> -->
-    <div style="margin-bottom:20px;text-align:center;">
-        <!-- <Input 
-            v-model="username" 
-            icon="ios-search-strong" 
-            placeholder="搜索用户名..." 
-            style="width: 50%" 
-            @on-enter="queryUsername"
-            @on-click="queryUsername"></Input> -->
-            <Input  
-            size="large"
-            icon="ios-search-strong" 
-            placeholder="角色查询" 
-            style="width: 25%"></Input>
-
+    <div class="input-first">
+        <Row>
+            <Col span="8" offset="8">
+                <Input 
+                    v-model.trim="input"
+                    size="large" 
+                    placeholder="角色查询" 
+                    @on-enter="queryRole">
+                    <Button slot="append" icon="android-search" @click="queryRole"></Button>
+                </Input> 
+            </Col>
+        </Row>      
     </div>
-    <Card style="background:#e8e8e8">
+    <Card class="card-box">
         <p slot="title">
             <Icon type="android-contact"></Icon>
             &nbsp;角色信息
         </p>
-        <div slot="extra" style="margin-top:-5px">
+        <div slot="extra" class="card-box-extra">
             <Tooltip content="新增" placement="top">
-                <Button type="primary" shape="circle" icon="plus-round" @click="openAddRoleModal"></Button>
+                <Button type="primary" shape="circle" icon="plus-round" @click="modalAdd"></Button>
             </Tooltip>
         </div>
         <Table :stripe="true" border :columns="columnsRole" :data="dataRole"></Table>
+        <div class="card-box-page" v-if="dataRole.length===0?false:true">
+            <div style="float: right;">
+                <Page 
+                    :total="page.total" 
+                    :current="page.current" 
+                    @on-change="pageChange" 
+                    show-total
+                    no-data-text 
+                    show-elevator></Page>
+            </div>
+        </div>
     </Card>
-
-    <Modal v-model="modalSaveRole" width="450" :mask-closable="false" @on-cancel="cancelModalSaveRole">
-        <p slot="header" style="color:#1890ff;text-align:center">
+    <Modal v-model="modal.visible.save" width="450" :mask-closable="false" @on-cancel="modalCloseSave">
+        <p slot="header" class="modal-header-info">
             <Icon type="android-contact"></Icon>
-            <span>&nbsp;{{modalSaveRoleTitle}}</span>
+            <span>&nbsp;{{modal.title}}</span>
         </p>
-        <Form :model="formSaveRole" label-position="right" :label-width="80" style="padding-left:20px;padding-right:25px;">
-            <FormItem label="角色名称：">
-                <Input v-model.trim="formSaveRole.name" placeholder="输入用户名"></Input>
-            </FormItem>
-            <FormItem label="角色描述：">
-                <Input v-model="formSaveRole.remarks" type="textarea" placeholder="输入描述信息..."></Input>
-            </FormItem>
-            <FormItem label="角色权限：">
-                <Poptip placement="right" width="300">
-			        <Button type="success" shape="circle" icon="unlocked">{{authorityLabel}}</Button>
-			        <div slot="content">
-						<Tree :data="authorityList" show-checkbox></Tree>
-			        </div>
-			    </Poptip>
-            </FormItem>
-        </Form>
-            
+        <div class="modal-content">
+            <Form :model="formSaveRole" label-position="right" :label-width="80">
+                <FormItem label="角色名称：">
+                    <Input v-model.trim="formSaveRole.name" placeholder="输入角色名"></Input>
+                </FormItem>
+                <FormItem label="角色描述：">
+                    <Input v-model="formSaveRole.remarks" type="textarea" placeholder="输入描述信息..."></Input>
+                </FormItem>
+                <FormItem label="角色权限：">
+                    <Poptip placement="right" width="300">
+                        <Button type="success" shape="circle" icon="unlocked">{{authority.label}}</Button>
+                        <div slot="content">
+                            <Tree :data="authority.list" show-checkbox></Tree>
+                        </div>
+                    </Poptip>
+                </FormItem>
+            </Form> 
+        </div> 
         <div slot="footer" style="text-align:center">
             <Button type="primary" shape="circle" icon="filing" @click="saveRole">保存并分配权限</Button>
-            <Button type="ghost" shape="circle" icon="refresh" style="margin-left: 10px" @click="resetSaveRoleForm">重置</Button>
+            <Button type="ghost" shape="circle" icon="refresh" style="margin-left: 10px" @click="resetForm">重置</Button>
         </div>
     </Modal>
-    <Modal v-model="modalDeleteRole" width="360" :mask-closable="false">
-        <p slot="header" style="color:#f60;text-align:center">
+    <Modal v-model="modal.visible.del" width="360" :mask-closable="false">
+        <p slot="header" class="modal-header-error">
             <Icon type="information-circled"></Icon>
-            <span>删除角色</span>
+            <span>&nbsp;{{modal.title}}</span>
         </p>
         <div style="text-align:center">
             <p>此角色删除后，将无法恢复！</p>
             <p>是否继续删除？</p>
         </div>
         <div slot="footer">
-            <Button type="error" size="large" long @click="deleteRole">删 除</Button>
+            <Button type="error" size="large" long @click="delRole">删 除</Button>
         </div>
     </Modal>
-    <Modal v-model="modalRoleUser" width="300" :closable="false">
-        <p slot="header" style="color:#1890ff;text-align:center">
+    <Modal v-model="modal.visible.show" width="300" :closable="false">
+        <p slot="header" class="modal-header-info">
             <Icon type="person"></Icon>
-            <span>角色用户</span>
+            <span>&nbsp;{{modal.title}}</span>
         </p>
         <div style="text-align:center">
-            <Table height="250" :columns="columnsRoleUser" :data="dataRoleUser" size="small" :show-header="false"></Table>
+            <Table height="250" :columns="columnsUser" :data="dataUser" size="small" :show-header="false"></Table>
         </div>
         <div slot="footer">
-            <Button type="primary" long @click="closeModalRoleUser">关 闭</Button>
+            <Button type="primary" long @click="modalCloseShow">关 闭</Button>
         </div>
     </Modal>
+
   </div>
 </template>
 
 <script>
+import { authorityTree } from '../../utils/tree.js'
 export default {
   name: 'RoleManage',
-  methods:{
-  	closeModalRoleUser () {
-  		this.modalRoleUser = false;
-  	},
-  	cancelModalSaveRole () {
-  		this.modalSaveRole = false;
-  	},
-  	saveRole () {
-  		this.modalSaveRole = false;
-  	},
-  	resetSaveRoleForm () {
-  		this.formSaveRole.name = '';
-  		this.formSaveRole.remarks = '';
-  		this.formSaveRole.authority = [];
-  	},
-  	deleteRole () {
-  		this.modalDeleteRole = false;
-  	},
-  	openAddRoleModal () {
-  		this.modalSaveRole = true;
-  		this.modalSaveRoleTitle = '增加角色';
-  	},
-  	onFormSearchRole () {
-  		//axios()
-  	},
-  	showRoleUser (index) {
-  		this.modalRoleUser = true;
-  	},
-  	openEditRoleModal (index) {
-        /*this.$Modal.info({
-            title: 'User Info',
-            content: `Name：${this.data6[index].name}<br>Age：${this.data6[index].age}<br>Address：${this.data6[index].address}`
-        })*/
-        this.modalSaveRole = true;
-        this.modalSaveRoleTitle = '编辑角色';
-    },
-    openDeleteRoleModal (index) {
-        /*this.data6.splice(index, 1);*/
-        this.modalDeleteRole = true;
-    }
-  },
   data () {
     return {
-    	columnsRoleUser: [
-            {
-                title: '用户',
-                key: 'name',
-                align: 'center'
-            }
-        ],
-        dataRoleUser: [
-            {name: 'John Brown'},
-            {name: 'Jim Green'},
-            {name: 'Joe Black'},
-            {name: 'Jon Snow'},
-            {name: 'Jim Green'},
-            {name: 'Joe Black'},
-            {name: 'Jon Snow'},
-            {name: 'Jim Green'},
-            {name: 'Joe Black'},
-            {name: 'Jon Snow'}
-        ],
-    	authorityLabel:'添加权限',
-    	authorityList: [
-            {
-                title: 'parent 1',
-                expand: true,
-                checked: false,
-                children: [
-                    {
-                        title: 'parent 1-1',
-                        expand: true,
-                        checked: false,
-                        children: [
-                            {
-                                title: 'leaf 1-1-1',
-                                checked: false,
-                            },
-                            {
-                                title: 'leaf 1-1-2',
-                                checked: false,
-                            }
-                        ]
-                    },
-                    {
-                        title: 'parent 1-2',
-                        expand: true,
-                        checked: false,
-                        children: [
-                            {
-                                title: 'leaf 1-2-1',
-                                checked: false,
-                            },
-                            {
-                                title: 'leaf 1-2-1',
-                                checked: false,
-                            }
-                        ]
-                    }
-                ]
-            }
-        ],
-        modalRoleUser: false,
-    	modalSaveRole: false,
-    	modalDeleteRole: false,
-    	modalSaveRoleTitle: '',
-    	formSaveRole: {
-    		name:'',
-    		remarks:'',
-    		authority:[]
-    	},
-    	formSearchRole:{
-    		rolename:'',
-    		roleUser:''
-    	},
-    	columnsRole: [
+        input: '',
+        index: '',
+        columnsRole: [
             {
                 title: '角色名称',
                 key: 'name',
-                align: 'center'
+                align: 'center',
+                sortable: true
             },
             {
                 title: '角色描述',
-                key: 'age',
+                key: 'remarks',
                 align: 'center'
             },
             {
@@ -237,7 +127,7 @@ export default {
                             },
                             on: {
                                 click: () => {
-                                    this.showRoleUser(params.index)
+                                    this.modalShow(params.index)
                                 }
                             }
                         }, '查看用户')
@@ -261,7 +151,7 @@ export default {
                             },
                             on: {
                                 click: () => {
-                                    this.openEditRoleModal(params.index)
+                                    this.modalEdit(params.index)
                                 }
                             }
                         }, '编辑'),
@@ -272,7 +162,7 @@ export default {
                             },
                             on: {
                                 click: () => {
-                                    this.openDeleteRoleModal(params.index)
+                                    this.modalDel(params.index)
                                 }
                             }
                         }, '删除')
@@ -283,26 +173,192 @@ export default {
         dataRole: [
             {
                 name: '超级管理员',
-                age: 18,
+                remarks: 18,
             },
             {
                 name: '集成平台用户',
-                age: 24
+                remarks: 24
             },
             {
                 name: '总队用户',
-                age: 30
+                remarks: 30
             },
             {
                 name: '支队用户',
-                age: 26
+                remarks: 26
             }
-        ]
+        ],
+        page: {
+            current: 1,
+            total: 0
+        },
+        modal: {
+            title: '',
+            visible: {
+                save: false,
+                del: false,
+                show: false
+            }
+        },
+        formSaveRole: {
+            name: '',
+            remarks: '',
+            authority: []
+        },
+        authority: {
+            label: '添加权限',
+            list: [{
+                title: '用户管理',
+                children: [
+                    {
+                        title: '新增按钮',
+                        value: '002'
+                    },{
+                        title: '删除按钮',
+                        value: '003'  
+                    },{
+                        title: '编辑按钮',
+                        value: '004'
+                    } 
+                ]
+            },{
+                title: '权限管理',
+                children: [
+                    {
+                        title: '新增按钮',
+                        value: '006',
+                        checked: true
+                    },{
+                        title: '删除按钮',
+                        value: '007'  
+                    },{
+                        title: '编辑按钮',
+                        value: '008'
+                    } 
+                ]
+            }]
+        },
+        columnsUser: [
+            {
+                title: '用户',
+                key: 'name',
+                align: 'center'
+            }
+        ],
+        dataUser: [
+            {name: '彭万里'},
+            {name: '高大山'},
+            {name: '谢大海'},
+            {name: '马宏宇'},
+            {name: '林莽'},
+            {name: '黄强辉'},
+            {name: '章汉夫'},
+            {name: '范长江'},
+            {name: '林君雄'},
+            {name: '谭平山'}
+        ],
+    }
+  },
+  created() {
+    //axios
+    this.page.total = this.dataRole.length;  
+  },
+  methods: {
+    utilReset() {
+        this.formSaveRole = {
+            name: '',
+            remarks: '',
+            authority: []
+        }
+        this.authority.label = '选择权限';
+        this.authority.list = authorityTree(this.authority.list, []);
+    },
+    utilEdit(index, arr) {
+        this.formSaveRole = {
+            name: this.dataRole[index].name,
+            remarks: this.dataRole[index].remarks,
+            authority: arr
+        }
+        this.authority.list = authorityTree(this.authority.list, arr);
+    },
+    queryRole() {
+        //axios
+    },
+    modalAdd() {
+        this.utilReset();
+        this.modal.title = '新增角色';
+        this.modal.visible.save = true;
+        console.log(this.authority.list);
+    },
+    pageChange(val) {
+        this.page.current = val;
+        //axios
+    },
+    modalCloseSave() {
+        this.modal.visible.save = false;
+        this.$Message.warning('本次修改已撤销！');
+    },
+    saveRole() {
+        //axios
+        this.modal.visible.save = false;
+        this.$Message.success('保存成功！');
+    },
+    resetForm() {
+        this.utilReset();
+    },
+    delRole() {
+        //axios(index)
+        this.modal.visible.del = false;
+        this.$Message.success('删除成功！');
+    },
+    modalCloseShow() {
+        this.modal.visible.show = false;
+    },
+    modalShow(index) {
+        this.modal.title = '角色用户';
+        //axios
+        this.modal.visible.show = true;
+    },
+    modalEdit(index) {
+        this.modal.title = '编辑角色';
+        //axios
+        let check = ['002','003','006','007'];
+        this.utilEdit(index, check);
+        this.modal.visible.save = true;
+    },
+    modalDel(index) {
+        this.modal.title = '删除角色';
+        this.modal.visible.del = true;
     }
   }
 }
 </script>
 
 <style scoped>
-    
+  .input-first{
+    margin-bottom: 20px;
+  }
+  .card-box{
+    background: #e8e8e8;
+  }
+  .card-box-extra{
+    margin-top: -5px;
+  }
+  .card-box-page{
+    margin: 10px;
+    overflow: hidden;
+    padding-bottom: 2px;
+  }
+  .modal-header-info{
+    color: #1890ff;
+    text-align: center;
+  }
+  .modal-header-error{
+    color: #f60;
+    text-align: center;
+  }
+  .modal-content{
+    padding-left: 20px;
+    padding-right: 25px;
+  } 
 </style>
