@@ -10,7 +10,10 @@
                       </div>
                   </Col>
                   <Col span="16">
-                      <div class="header-title">湖南省高警局数据统一接入传输平台</div>
+                      <div class="header-title">
+                          <div class="header-title-top">湖南省高速公路交通警察局</div>
+                          <div class="header-title-bottom">数据统一接入传输平台</div>
+                      </div>
                   </Col>
                   <Col span="6">
                       <div class="header-nav" >
@@ -119,20 +122,31 @@ export default {
 .header-logo{
     float: left;
     position: relative;
-    top: 6px;
+    top: 4px;
     left: 20px;
     width: 50px;
     height:64px;
 }
 .header-logo img{
-    width: 50px;
-    height:47px;
+    width: 53px;
+    height:53px;
 }
 .header-title{
-    color: #fff;   
-    font-size: 24px;
     float:left;
     padding-left: 25px;
+}
+.header-title-top{
+    height: 30px;
+    line-height: 34px;
+    color: #fff;
+    font-size: 13px;
+}
+.header-title-bottom{
+    height: 22px;
+    line-height: 22px;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
 }
 .header-nav{
     font-size: 15px;

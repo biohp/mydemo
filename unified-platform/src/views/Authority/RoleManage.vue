@@ -43,12 +43,12 @@
             <span>&nbsp;{{modal.title}}</span>
         </p>
         <div class="modal-content">
-            <Form :model="formSaveRole" label-position="right" :label-width="80">
-                <FormItem label="角色名称：">
-                    <Input v-model.trim="formSaveRole.name" placeholder="输入角色名"></Input>
+            <Form ref="formRole" :model="formRole" :rules="ruleRole" label-position="right" :label-width="100">
+                <FormItem label="角色名称：" prop="name">
+                    <Input v-model.trim="formRole.name" placeholder="输入角色名"></Input>
                 </FormItem>
                 <FormItem label="角色描述：">
-                    <Input v-model="formSaveRole.remarks" type="textarea" placeholder="输入描述信息..."></Input>
+                    <Input v-model="formRole.remarks" type="textarea" placeholder="输入描述信息..."></Input>
                 </FormItem>
                 <FormItem label="角色权限：">
                     <Poptip placement="right" width="300">
@@ -61,8 +61,8 @@
             </Form> 
         </div> 
         <div slot="footer" style="text-align:center">
-            <Button type="primary" shape="circle" icon="filing" @click="saveRole">保存并分配权限</Button>
-            <Button type="ghost" shape="circle" icon="refresh" style="margin-left: 10px" @click="resetForm">重置</Button>
+            <Button type="primary" shape="circle" icon="filing" @click="saveRole('formRole')">保存并分配权限</Button>
+            <Button type="ghost" shape="circle" icon="refresh" style="margin-left: 10px" @click="resetForm('formRole')">重置</Button>
         </div>
     </Modal>
     <Modal v-model="modal.visible.del" width="360" :mask-closable="false">
@@ -101,7 +101,7 @@ export default {
   data () {
     return {
         input: '',
-        index: '',
+        index: -1,
         columnsRole: [
             {
                 title: '角色名称',
@@ -200,10 +200,15 @@ export default {
                 show: false
             }
         },
-        formSaveRole: {
+        formRole: {
             name: '',
             remarks: '',
             authority: []
+        },
+        ruleRole: {
+            name: [
+                { required: true, message: '角色名不能为空', trigger: 'blur' }
+            ]
         },
         authority: {
             label: '添加权限',
@@ -265,7 +270,7 @@ export default {
   },
   methods: {
     utilReset() {
-        this.formSaveRole = {
+        this.formRole = {
             name: '',
             remarks: '',
             authority: []
@@ -274,7 +279,7 @@ export default {
         this.authority.list = authorityTree(this.authority.list, []);
     },
     utilEdit(index, arr) {
-        this.formSaveRole = {
+        this.formRole = {
             name: this.dataRole[index].name,
             remarks: this.dataRole[index].remarks,
             authority: arr
@@ -285,10 +290,10 @@ export default {
         //axios
     },
     modalAdd() {
+        this.$refs['formRole'].resetFields();
         this.utilReset();
         this.modal.title = '新增角色';
         this.modal.visible.save = true;
-        console.log(this.authority.list);
     },
     pageChange(val) {
         this.page.current = val;
@@ -298,12 +303,19 @@ export default {
         this.modal.visible.save = false;
         this.$Message.warning('本次修改已撤销！');
     },
-    saveRole() {
+    saveRole(name) {
+        this.$refs[name].validate((valid) => {
+            if (valid) {
+                this.$Message.success('保存成功！');
+                this.modal.visible.save = false;
+            } else {
+                this.$Message.error('提交失败！');
+            }
+        })
         //axios
-        this.modal.visible.save = false;
-        this.$Message.success('保存成功！');
     },
-    resetForm() {
+    resetForm(name) {
+        this.$refs[name].resetFields();
         this.utilReset();
     },
     delRole() {
@@ -320,6 +332,7 @@ export default {
         this.modal.visible.show = true;
     },
     modalEdit(index) {
+        this.$refs['formRole'].resetFields();
         this.modal.title = '编辑角色';
         //axios
         let check = ['002','003','006','007'];
@@ -359,6 +372,6 @@ export default {
   }
   .modal-content{
     padding-left: 20px;
-    padding-right: 25px;
+    padding-right: 40px;
   } 
 </style>

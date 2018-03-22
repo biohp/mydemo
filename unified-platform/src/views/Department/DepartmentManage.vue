@@ -136,6 +136,25 @@
             <Button type="error" size="large" long @click="deleteDept">删 除</Button>
         </div>
     </Modal>
+    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+        <FormItem label="Name" prop="name">
+            <Input v-model="formValidate.name" placeholder="Enter your name"></Input>
+        </FormItem>
+        <FormItem label="E-mail" prop="mail">
+            <Input v-model="formValidate.mail" placeholder="Enter your e-mail"></Input>
+        </FormItem>
+        <FormItem label="City" prop="city">
+            <Select v-model="formValidate.city" placeholder="Select your city">
+                <Option value="beijing">New York</Option>
+                <Option value="shanghai">London</Option>
+                <Option value="shenzhen">Sydney</Option>
+            </Select>
+        </FormItem>
+        <FormItem>
+            <Button type="primary" @click="handleSubmit('formValidate')">Submit</Button>
+            <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
+        </FormItem>
+    </Form>
   </div>
 </template>
 
@@ -165,7 +184,22 @@ export default {
   		this.modalSaveDept = false;
   	},
   	resetSaveDeptForm () {},
-  	deleteDept () {}
+  	deleteDept () {},
+
+    handleSubmit (name) {
+        this.$refs[name].validate((valid) => {
+            if (valid) {
+                this.$Message.success('Success!');
+            } else {
+                this.$Message.error('Fail!');
+            }
+        })
+        console.log(this.formValidate);
+    },
+    handleReset (name) {
+        this.$refs[name].resetFields();
+        console.log(this.formValidate);
+    }
   },
   data () {
     return {
@@ -307,7 +341,24 @@ export default {
                 dept: '岳阳支队',
                 post: ''
             }
-        ]
+        ],
+        formValidate: {
+            name: '',
+            mail: '',
+            city: ''
+        },
+        ruleValidate: {
+            name: [
+                { required: true, message: 'The name cannot be empty', trigger: 'blur' }
+            ],
+            mail: [
+                { required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
+                { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
+            ],
+            city: [
+                { required: true, message: 'Please select the city', trigger: 'change' }
+            ]
+        }
 
     }
   }

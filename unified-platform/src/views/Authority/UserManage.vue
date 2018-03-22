@@ -48,17 +48,17 @@
             <span>&nbsp;{{modal.title}}</span>
         </p>
         <div class="modal-content">
-            <Form :model="formSaveUser" label-position="right" :label-width="100">
+            <Form ref="formUser" :model="formUser" :rules="ruleUser" label-position="right" :label-width="100">
                 <Row :gutter="16">
                     <Col span="12">
-                        <FormItem label="用户名：">
-                            <Input v-model.trim="formSaveUser.user" placeholder="输入用户名"></Input>
+                        <FormItem label="用户名：" prop="user">
+                            <Input v-model.trim="formUser.user" placeholder="输入用户名"></Input>
                         </FormItem>
                     </Col>
                     <Col span="12">
-                        <FormItem label="所属机构：">
+                        <FormItem label="所属机构：" prop="dept">
                             <Poptip placement="left" width="300">
-                                <Button type="success" shape="circle" icon="android-home">{{dept.title}}</Button>
+                                <Input :readonly="true" v-model.trim="dept.title" placeholder="选择机构"></Input>
                                 <div slot="content">
                                     <Tree :data="dept.list" @on-select-change="selectDept"></Tree>
                                 </div>
@@ -66,20 +66,20 @@
                         </FormItem>
                     </Col>
                     <Col span="12">
-                        <FormItem label="姓名：">
-                            <Input v-model.trim="formSaveUser.name" placeholder="输入姓名"></Input>
+                        <FormItem label="姓名：" prop="name">
+                            <Input v-model.trim="formUser.name" placeholder="输入姓名"></Input>
                         </FormItem>
                     </Col>
                     <Col span="12">
                         <FormItem label="IP地址：">
-                            <Input v-model.trim="formSaveUser.ip" placeholder="输入IP"></Input>
+                            <Input v-model.trim="formUser.ip" placeholder="输入IP"></Input>
                         </FormItem>
                     </Col>
                     <Col span="12">
-                        <FormItem label="密码：">
+                        <FormItem label="密码：" prop="pwd">
                             <Input 
                             type="password"
-                            v-model.trim="formSaveUser.pwd" 
+                            v-model.trim="formUser.pwd" 
                             placeholder="输入6-12位数字字母组合" 
                             @on-change="pwdChange"></Input>
                         </FormItem>
@@ -91,7 +91,7 @@
                     </Col>
                     <Col span="24">
                         <FormItem label="角色：">
-                            <Select v-model="formSaveUser.role" filterable multiple placeholder="选择角色" >
+                            <Select v-model="formUser.role" filterable multiple placeholder="选择角色" >
                                 <Option v-for="item in roleList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                             </Select>
                         </FormItem>
@@ -100,8 +100,8 @@
             </Form>
         </div>
         <div slot="footer" style="text-align:center">
-            <Button type="primary" shape="circle" icon="filing" @click="saveUser">保存</Button>
-            <Button type="ghost" shape="circle" icon="refresh" style="margin-left: 10px" @click="resetForm">重置</Button> 
+            <Button type="primary" shape="circle" icon="filing" @click="saveUser('formUser')">保存</Button>
+            <Button type="ghost" shape="circle" icon="refresh" style="margin-left: 10px" @click="resetForm('formUser')">重置</Button> 
         </div>
     </Modal>
     <Modal v-model="modal.visible.del" width="360" :mask-closable="false">
@@ -145,6 +145,7 @@ export default {
             input: '',
             select: '1'
         },
+        index: -1,
         columnsUser: [
             {
                 title: '用户名',
@@ -330,13 +331,27 @@ export default {
             }
         ],
         userRole: [],
-        formSaveUser: {
+        formUser: {
             user: '',
             dept: '',
             name: '',
             pwd:'',
             ip:'',
             role:[]
+        },
+        ruleUser: {
+            user: [
+                { required: true, message: '用户名不能为空', trigger: 'blur' }
+            ],
+            dept: [
+                { required: true, message: '请选择一个机构', trigger: 'change' }
+            ],
+            name: [
+                { required: true, message: '姓名不能为空', trigger: 'blur' }
+            ],
+            pwd: [
+                { required: true, message: '密码不能为空', trigger: 'blur' }
+            ]
         },
         pwdPercent:0,
         pwdStatus : 'wrong' 
@@ -359,7 +374,7 @@ export default {
   methods: {
     //重置表单
     utilReset() {
-        this.formSaveUser = {
+        this.formUser = {
             user: '',
             dept: '',
             name: '',
@@ -372,7 +387,7 @@ export default {
         this.pwdPercent = 0;
     },
     utilEdit(index) {
-        this.formSaveUser = {
+        this.formUser = {
             user: this.dataUser[index].user,
             dept: this.dataUser[index].dept,
             name: this.dataUser[index].name,
@@ -380,7 +395,7 @@ export default {
             pwd: '',
             role: this.dataUser[index].role 
         } 
-        this.dept.title = this.formSaveUser.dept;
+        this.dept.title = this.formUser.dept;
         this.dept.list = deptTree(this.dept.list, this.dept.title);      
     },
     //查询用户
@@ -410,9 +425,10 @@ export default {
     },
     //打开模态框
     modalAdd() {
+        this.$refs['formUser'].resetFields();
         this.utilReset();
-        this.modal.visible.save = true;
         this.modal.title = '新增用户';
+        this.modal.visible.save = true;
     },
     modalEdit(index) {
         this.modal.title = '编辑用户';
@@ -443,12 +459,20 @@ export default {
         this.$Message.warning('本次修改已撤销！');
         this.utilReset();
     },
-    saveUser() {
+    saveUser(name) {
+        this.$refs[name].validate((valid) => {
+            if (valid) {
+                this.$Message.success('保存成功！');
+                this.modal.visible.save = false;
+            } else {
+                this.$Message.error('提交失败！');
+            }
+        })
         //axios()
-        this.modal.visible.save = false;
-        this.$Message.success('保存成功');
+        
     },
-    resetForm() {
+    resetForm(name) {
+        this.$refs[name].resetFields();
         this.utilReset();
     },
     delUser() {
@@ -463,10 +487,10 @@ export default {
     selectDept(data) {
         if(data.length!==0){
             this.dept.title = data[0].title;
-            this.formSaveUser.dept = data[0].value;
+            this.formUser.dept = data[0].value;
         }else {
             this.dept.title = '选择机构';
-            this.formSaveUser.dept = '';
+            this.formUser.dept = '';
         }
     },
     //换页
@@ -476,7 +500,7 @@ export default {
     //监控密码强度
     pwdChange(){
         //百分比和颜色(Percent,Status)
-        let ps = password.getPercentStatus(this.formSaveUser.pwd);
+        let ps = password.getPercentStatus(this.formUser.pwd);
         this.pwdPercent = ps.passwordPercent;
         this.pwdStatus = ps.passwordStatus;
     }
