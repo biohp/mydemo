@@ -2,8 +2,8 @@
 <template>
   <div id="admin-manage">
     <div class="input-first">
-        <Row>
-            <Col span="8" offset="8">
+        <Row type="flex" justify="center">
+            <Col span="8">
                 <Input 
                     v-model.trim="form.input"
                     size="large" 
@@ -57,7 +57,7 @@
                     </Col>
                     <Col span="12">
                         <FormItem label="所属机构：" prop="dept">
-                            <Poptip placement="left" width="300">
+                            <Poptip placement="bottom" width="300">
                                 <Input :readonly="true" v-model.trim="dept.title" placeholder="选择机构"></Input>
                                 <div slot="content">
                                     <Tree :data="dept.list" @on-select-change="selectDept"></Tree>
@@ -100,8 +100,8 @@
             </Form>
         </div>
         <div slot="footer" style="text-align:center">
-            <Button type="primary" shape="circle" icon="filing" @click="saveUser('formUser')">保存</Button>
-            <Button type="ghost" shape="circle" icon="refresh" style="margin-left: 10px" @click="resetForm('formUser')">重置</Button> 
+            <Button type="primary" shape="circle" icon="filing" @click="saveUser">保存</Button>
+            <Button type="ghost" shape="circle" icon="refresh" style="margin-left: 10px" @click="resetForm">重置</Button> 
         </div>
     </Modal>
     <Modal v-model="modal.visible.del" width="360" :mask-closable="false">
@@ -142,6 +142,7 @@ export default {
   data () {
     return {
         form: {
+            name: 'formUser',
             input: '',
             select: '1'
         },
@@ -150,7 +151,8 @@ export default {
             {
                 title: '用户名',
                 key: 'user',
-                align: 'center'
+                align: 'center',
+                sortable: true
             },
             {
                 title: '所属机构',
@@ -167,7 +169,8 @@ export default {
             {
                 title: 'IP地址',
                 key: 'ip',
-                align: 'center'
+                align: 'center',
+                sortable: true
             },
             {
                 title: '用户角色',
@@ -350,7 +353,8 @@ export default {
                 { required: true, message: '姓名不能为空', trigger: 'blur' }
             ],
             pwd: [
-                { required: true, message: '密码不能为空', trigger: 'blur' }
+                { required: true, message: '密码不能为空', trigger: 'blur' },
+                { type: 'string', min: 6, message: '密码至少6位', trigger: 'blur' }
             ]
         },
         pwdPercent:0,
@@ -425,7 +429,7 @@ export default {
     },
     //打开模态框
     modalAdd() {
-        this.$refs['formUser'].resetFields();
+        this.$refs[this.form.name].resetFields();
         this.utilReset();
         this.modal.title = '新增用户';
         this.modal.visible.save = true;
@@ -459,8 +463,8 @@ export default {
         this.$Message.warning('本次修改已撤销！');
         this.utilReset();
     },
-    saveUser(name) {
-        this.$refs[name].validate((valid) => {
+    saveUser() {
+        this.$refs[this.form.name].validate((valid) => {
             if (valid) {
                 this.$Message.success('保存成功！');
                 this.modal.visible.save = false;
@@ -471,8 +475,8 @@ export default {
         //axios()
         
     },
-    resetForm(name) {
-        this.$refs[name].resetFields();
+    resetForm() {
+        this.$refs[this.form.name].resetFields();
         this.utilReset();
     },
     delUser() {

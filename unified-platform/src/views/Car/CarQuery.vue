@@ -80,175 +80,29 @@
 	    </Form>
     <Card :bordered="false" style="background:#e8e8e8">
         <Tabs>
-            <TabPane label="数据缩略图" icon="image">
-                <!-- <Row :gutter="22" v-if="carQueryResult.length===0?false:true" >
-                  <Col span="4" class="tab-col" v-for="(item,key) in carQueryResult" :key="key">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img :src="item.TPLJ1" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>{{item.KKMC}}</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="primary" size="small" @click="show(key)">{{item.HPHM}}</Button>
-                            <span>{{item.TGSJ}}</span>
-                        </div>
-                      </Card>
-                  </Col>
-                </Row> -->
-                <Row :gutter="22" >
-                  <Col span="4" class="tab-col">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img src="../../assets/gc01.jpg" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>环长沙西收费站长张高速15公里392米</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="warning" size="small">湘A79389</Button>
-                            <span>2018-01-29 11:32:00</span>
-                        </div>
-                      </Card>
-                  </Col>
-                  <Col span="4" class="tab-col">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img src="../../assets/gc02.jpg" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>环长沙西收费站长张高速15公里392米</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="primary" size="small">湘A79389</Button>
-                            <span>2018-01-29 11:32:00</span>
-                        </div>
-                      </Card>
-                  </Col>
-                  <Col span="4" class="tab-col">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img src="../../assets/gc03.jpg" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>环长沙西收费站长张高速15公里392米</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="primary" size="small">湘A79389</Button>
-                            <span>2018-01-29 11:32:00</span>
-                        </div>
-                      </Card>
-                  </Col>
-                  <Col span="4" class="tab-col">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img src="../../assets/gc04.jpg" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>环长沙西收费站长张高速15公里392米</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="primary" size="small">湘A79389</Button>
-                            <span>2018-01-29 11:32:00</span>
-                        </div>
-                      </Card>
-                  </Col>
-                  <Col span="4" class="tab-col">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img src="../../assets/gc05.jpg" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>环长沙西收费站长张高速15公里392米</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="primary" size="small">湘A79389</Button>
-                            <span>2018-01-29 11:32:00</span>
-                        </div>
-                      </Card>
-                  </Col>
-                  <Col span="4" class="tab-col">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img src="../../assets/gc06.jpg" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>环长沙西收费站长张高速15公里392米</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="primary" size="small">湘A79389</Button>
-                            <span>2018-01-29 11:32:00</span>
-                        </div>
-                      </Card>
-                  </Col>
-                  <Col span="4" class="tab-col">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img src="../../assets/gc07.jpg" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>环长沙西收费站长张高速15公里392米</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="primary" size="small">湘A79389</Button>
-                            <span>2018-01-29 11:32:00</span>
-                        </div>
-                      </Card>
-                  </Col>
-                  <Col span="4" class="tab-col">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img src="../../assets/gc08.jpg" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>环长沙西收费站长张高速15公里392米</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="warning" size="small">湘A79389</Button>
-                            <span>2018-01-29 11:32:00</span>
-                        </div>
-                      </Card>
-                  </Col>
-                  <Col span="4" class="tab-col">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img src="../../assets/gc09.jpg" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>环长沙西收费站长张高速15公里392米</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="primary" size="small">湘A79389</Button>
-                            <span>2018-01-29 11:32:00</span>
-                        </div>
-                      </Card>
-                  </Col>
-                  <Col span="4" class="tab-col">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img src="../../assets/gc10.jpg" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>环长沙西收费站长张高速15公里392米</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="primary" size="small">湘A79389</Button>
-                            <span>2018-01-29 11:32:00</span>
-                        </div>
-                      </Card>
-                  </Col>
-                  <Col span="4" class="tab-col">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img src="../../assets/gc11.jpg" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>环长沙西收费站长张高速15公里392米</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="primary" size="small">湘A79389</Button>
-                            <span>2018-01-29 11:32:00</span>
-                        </div>
-                      </Card>
-                  </Col>
-                  <Col span="4" class="tab-col">
-                      <Card class="tab-card" :padding="0" :bordered="false">
-                        <img src="../../assets/gc12.jpg" class="tab-img">
-                        <div class="tab-img-title">
-                            <h5>环长沙西收费站长张高速15公里392米</h5>
-                        </div>
-                        <div class="tab-img-content">
-                            <Button type="primary" size="small">湘A79389</Button>
-                            <span>2018-01-29 11:32:00</span>
-                        </div>
-                      </Card>
-                  </Col>
-                </Row> 
+            <TabPane label="数据列表" icon="navicon-round">
+                <Table :border="true" stripe :columns="columnsCarQuery" :data="carQueryResult" size="small"></Table>
                 <div style="margin: 10px;overflow: hidden">
                     <div style="float: right;padding-bottom:2px;">
                         <Page no-data-text show-elevator :total="total" :current="1" show-total @on-change="dataQueryChangePage" size="small"></Page>
                     </div>
                 </div>
             </TabPane>
-            <TabPane label="数据列表" icon="navicon-round">
-                <Table :border="true" stripe :columns="columnsCarQuery" :data="carQueryResult" size="small"></Table>
+            <TabPane label="数据缩略图" icon="image">
+                <Row :gutter="22" v-if="carQueryResult.length===0?false:true" >
+                  <Col span="4" class="tab-col" v-for="(item,key) in carQueryResult" :key="key">
+                      <Card class="tab-card" :padding="0" :bordered="false" @click.native="show(key)">
+                        <img :src="item.TPLJ1" class="tab-img">
+                        <div class="tab-img-title">
+                            <h5>{{item.KKMC}}</h5>
+                        </div>
+                        <div class="tab-img-content">
+                            <Button type="primary" size="small">{{item.HPHM}}</Button>
+                            <span>{{item.TGSJ}}</span>
+                        </div>
+                      </Card>
+                  </Col>
+                </Row>
                 <div style="margin: 10px;overflow: hidden">
                     <div style="float: right;padding-bottom:2px;">
                         <Page no-data-text show-elevator :total="total" :current="1" show-total @on-change="dataQueryChangePage" size="small"></Page>
@@ -576,131 +430,131 @@ export default {
 	                    })
 	                ]);
 	            }
-	        }
-        ],
-        carQueryResult: [
-        	{
-                TGSJ: '2018-01-29 11:32:00',
-                KKMC: '环长沙西收费站长张高速15公里392米',
-                HPHM: '湘A79389',
-                HPZL_NAME: '大型汽车',
-                CXFX_NAME: '由西向东',
-                CDBH: '2',
-                XSSD: 130,
-                CLPP: '奔驰',
-                CSYS_NAME: '白',
-                TPLJ1: 'http://pic.58pic.com/58pic/13/71/22/35T58PICrEk_1024.jpg',},{
-                TGSJ: '2018-01-29 11:32:00',
-                KKMC: '环长沙西收费站长张高速15公里392米',
-                HPHM: '湘A79389',
-                HPZL_NAME: '小型汽车',
-                CXFX_NAME: '由西向东',
-                CDBH: '2',
-                XSSD: 120,
-                CLPP: '奔驰',
-                CSYS_NAME: '红',
-                TPLJ1: 'http://img.taopic.com/uploads/allimg/130316/235102-13031616344950.jpg',},{
-                TGSJ: '2018-01-29 11:32:00',
-                KKMC: '环长沙西收费站长张高速15公里392米',
-                HPHM: '湘A79389',
-                HPZL_NAME: '小型汽车',
-                CXFX_NAME: '由西向东',
-                CDBH: '2',
-                XSSD: 99,
-                CLPP: '奔驰',
-                CSYS_NAME: '黑',
-                TPLJ1: 'http://pic1.16pic.com/00/07/66/16pic_766152_b.jpg',},{
-                TGSJ: '2018-01-29 11:32:00',
-                KKMC: '环长沙西收费站长张高速15公里392米',
-                HPHM: '湘A79389',
-                HPZL_NAME: '小型汽车',
-                CXFX_NAME: '由西向东',
-                CDBH: '2',
-                XSSD: 59,
-                CLPP: '奔驰',
-                CSYS_NAME: '黑',
-                TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',},{
-                TGSJ: '2018-01-29 11:32:00',
-                KKMC: '环长沙西收费站长张高速15公里392米',
-                HPHM: '湘A79389',
-                HPZL_NAME: '小型汽车',
-                CXFX_NAME: '由西向东',
-                CDBH: '2',
-                XSSD: 120,
-                CLPP: '奔驰',
-                CSYS_NAME: '红',
-                TPLJ1: 'http://img.taopic.com/uploads/allimg/130316/235102-13031616344950.jpg',},{
-                TGSJ: '2018-01-29 11:32:00',
-                KKMC: '环长沙西收费站长张高速15公里392米',
-                HPHM: '湘A79389',
-                HPZL_NAME: '小型汽车',
-                CXFX_NAME: '由西向东',
-                CDBH: '2',
-                XSSD: 99,
-                CLPP: '奔驰',
-                CSYS_NAME: '黑',
-                TPLJ1: 'http://pic1.16pic.com/00/07/66/16pic_766152_b.jpg',},{
-                TGSJ: '2018-01-29 11:32:00',
-                KKMC: '环长沙西收费站长张高速15公里392米',
-                HPHM: '湘A79389',
-                HPZL_NAME: '小型汽车',
-                CXFX_NAME: '由西向东',
-                CDBH: '2',
-                XSSD: 59,
-                CLPP: '奔驰',
-                CSYS_NAME: '黑',
-                TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',},{
-                TGSJ: '2018-01-29 11:32:00',
-                KKMC: '环长沙西收费站长张高速15公里392米',
-                HPHM: '湘A79389',
-                HPZL_NAME: '小型汽车',
-                CXFX_NAME: '由西向东',
-                CDBH: '2',
-                XSSD: 99,
-                CLPP: '奔驰',
-                CSYS_NAME: '黑',
-                TPLJ1: 'http://pic1.16pic.com/00/07/66/16pic_766152_b.jpg',},{
-                TGSJ: '2018-01-29 11:32:00',
-                KKMC: '环长沙西收费站长张高速15公里392米',
-                HPHM: '湘A79389',
-                HPZL_NAME: '小型汽车',
-                CXFX_NAME: '由西向东',
-                CDBH: '2',
-                XSSD: 59,
-                CLPP: '奔驰',
-                CSYS_NAME: '黑',
-                TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',},{
-                TGSJ: '2018-01-29 11:32:00',
-                KKMC: '环长沙西收费站长张高速15公里392米',
-                HPHM: '湘A79389',
-                HPZL_NAME: '小型汽车',
-                CXFX_NAME: '由西向东',
-                CDBH: '2',
-                XSSD: 120,
-                CLPP: '奔驰',
-                CSYS_NAME: '红',
-                TPLJ1: 'http://img.taopic.com/uploads/allimg/130316/235102-13031616344950.jpg',},{
-                TGSJ: '2018-01-29 11:32:00',
-                KKMC: '环长沙西收费站长张高速15公里392米',
-                HPHM: '湘A79389',
-                HPZL_NAME: '小型汽车',
-                CXFX_NAME: '由西向东',
-                CDBH: '2',
-                XSSD: 99,
-                CLPP: '奔驰',
-                CSYS_NAME: '黑',
-                TPLJ1: 'http://pic1.16pic.com/00/07/66/16pic_766152_b.jpg',},{
-                TGSJ: '2018-01-29 11:32:00',
-                KKMC: '环长沙西收费站长张高速15公里392米',
-                HPHM: '湘A79389',
-                HPZL_NAME: '小型汽车',
-                CXFX_NAME: '由西向东',
-                CDBH: '2',
-                XSSD: 59,
-                CLPP: '奔驰',
-                CSYS_NAME: '黑',
-                TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',}
-        ]
+            }
+      ],
+      carQueryResult: [
+      	{
+              TGSJ: '2018-01-29 11:32:00',
+              KKMC: '环长沙西收费站长张高速15公里392米',
+              HPHM: '湘A79389',
+              HPZL_NAME: '大型汽车',
+              CXFX_NAME: '由西向东',
+              CDBH: '2',
+              XSSD: 130,
+              CLPP: '奔驰',
+              CSYS_NAME: '白',
+              TPLJ1: 'http://pic.58pic.com/58pic/13/71/22/35T58PICrEk_1024.jpg',},{
+              TGSJ: '2018-01-29 11:32:00',
+              KKMC: '环长沙西收费站长张高速15公里392米',
+              HPHM: '湘A79389',
+              HPZL_NAME: '小型汽车',
+              CXFX_NAME: '由西向东',
+              CDBH: '2',
+              XSSD: 120,
+              CLPP: '奔驰',
+              CSYS_NAME: '红',
+              TPLJ1: 'http://img.taopic.com/uploads/allimg/130316/235102-13031616344950.jpg',},{
+              TGSJ: '2018-01-29 11:32:00',
+              KKMC: '环长沙西收费站长张高速15公里392米',
+              HPHM: '湘A79389',
+              HPZL_NAME: '小型汽车',
+              CXFX_NAME: '由西向东',
+              CDBH: '2',
+              XSSD: 99,
+              CLPP: '奔驰',
+              CSYS_NAME: '黑',
+              TPLJ1: 'http://pic1.16pic.com/00/07/66/16pic_766152_b.jpg',},{
+              TGSJ: '2018-01-29 11:32:00',
+              KKMC: '环长沙西收费站长张高速15公里392米',
+              HPHM: '湘A79389',
+              HPZL_NAME: '小型汽车',
+              CXFX_NAME: '由西向东',
+              CDBH: '2',
+              XSSD: 59,
+              CLPP: '奔驰',
+              CSYS_NAME: '黑',
+              TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',},{
+              TGSJ: '2018-01-29 11:32:00',
+              KKMC: '环长沙西收费站长张高速15公里392米',
+              HPHM: '湘A79389',
+              HPZL_NAME: '小型汽车',
+              CXFX_NAME: '由西向东',
+              CDBH: '2',
+              XSSD: 120,
+              CLPP: '奔驰',
+              CSYS_NAME: '红',
+              TPLJ1: 'http://img.taopic.com/uploads/allimg/130316/235102-13031616344950.jpg',},{
+              TGSJ: '2018-01-29 11:32:00',
+              KKMC: '环长沙西收费站长张高速15公里392米',
+              HPHM: '湘A79389',
+              HPZL_NAME: '小型汽车',
+              CXFX_NAME: '由西向东',
+              CDBH: '2',
+              XSSD: 99,
+              CLPP: '奔驰',
+              CSYS_NAME: '黑',
+              TPLJ1: 'http://pic1.16pic.com/00/07/66/16pic_766152_b.jpg',},{
+              TGSJ: '2018-01-29 11:32:00',
+              KKMC: '环长沙西收费站长张高速15公里392米',
+              HPHM: '湘A79389',
+              HPZL_NAME: '小型汽车',
+              CXFX_NAME: '由西向东',
+              CDBH: '2',
+              XSSD: 59,
+              CLPP: '奔驰',
+              CSYS_NAME: '黑',
+              TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',},{
+              TGSJ: '2018-01-29 11:32:00',
+              KKMC: '环长沙西收费站长张高速15公里392米',
+              HPHM: '湘A79389',
+              HPZL_NAME: '小型汽车',
+              CXFX_NAME: '由西向东',
+              CDBH: '2',
+              XSSD: 99,
+              CLPP: '奔驰',
+              CSYS_NAME: '黑',
+              TPLJ1: 'http://pic1.16pic.com/00/07/66/16pic_766152_b.jpg',},{
+              TGSJ: '2018-01-29 11:32:00',
+              KKMC: '环长沙西收费站长张高速15公里392米',
+              HPHM: '湘A79389',
+              HPZL_NAME: '小型汽车',
+              CXFX_NAME: '由西向东',
+              CDBH: '2',
+              XSSD: 59,
+              CLPP: '奔驰',
+              CSYS_NAME: '黑',
+              TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',},{
+              TGSJ: '2018-01-29 11:32:00',
+              KKMC: '环长沙西收费站长张高速15公里392米',
+              HPHM: '湘A79389',
+              HPZL_NAME: '小型汽车',
+              CXFX_NAME: '由西向东',
+              CDBH: '2',
+              XSSD: 120,
+              CLPP: '奔驰',
+              CSYS_NAME: '红',
+              TPLJ1: 'http://img.taopic.com/uploads/allimg/130316/235102-13031616344950.jpg',},{
+              TGSJ: '2018-01-29 11:32:00',
+              KKMC: '环长沙西收费站长张高速15公里392米',
+              HPHM: '湘A79389',
+              HPZL_NAME: '小型汽车',
+              CXFX_NAME: '由西向东',
+              CDBH: '2',
+              XSSD: 99,
+              CLPP: '奔驰',
+              CSYS_NAME: '黑',
+              TPLJ1: 'http://pic1.16pic.com/00/07/66/16pic_766152_b.jpg',},{
+              TGSJ: '2018-01-29 11:32:00',
+              KKMC: '环长沙西收费站长张高速15公里392米',
+              HPHM: '湘A79389',
+              HPZL_NAME: '小型汽车',
+              CXFX_NAME: '由西向东',
+              CDBH: '2',
+              XSSD: 59,
+              CLPP: '奔驰',
+              CSYS_NAME: '黑',
+              TPLJ1: 'http://pic.58pic.com/58pic/15/48/60/17y58PICUk7_1024.jpg',}
+      ]
 
     }
   }
@@ -719,6 +573,7 @@ export default {
         height:140px;
     }
     .tab-img-title{
+        height: 36px;
         text-align:center;
         padding:0 10px;
     }

@@ -2,8 +2,8 @@
 <template>
   <div id="authority-manage">
     <div class="input-first">
-        <Row>
-            <Col span="8" offset="8">
+        <Row type="flex" justify="center">
+            <Col span="7">
                 <Input 
                     v-model.trim="input"
                     size="large" 
@@ -76,8 +76,8 @@
             </Form>  
         </div>
         <div slot="footer" style="text-align:center">
-            <Button type="primary" shape="circle" icon="filing" @click="saveAuthority('formAuthority')">保存</Button>
-            <Button type="ghost" shape="circle" icon="refresh" style="margin-left: 10px" @click="resetForm()">重置</Button>
+            <Button type="primary" shape="circle" icon="filing" @click="saveAuthority">保存</Button>
+            <Button type="ghost" shape="circle" icon="refresh" style="margin-left: 10px" @click="resetForm">重置</Button>
         </div>
     </Modal>
     <Modal v-model="modal.visible.del" width="360" :mask-closable="false">
@@ -101,6 +101,9 @@ export default {
   name: 'AuthorityManage',
   data () {
     return {
+        form: {
+            name: 'formAuthority'
+        },
         input: '',
         index: -1,
         page: {
@@ -150,7 +153,8 @@ export default {
             {
                 title: '权限编码',
                 key: 'code',
-                align: 'center'
+                align: 'center',
+                sortable: true
             },
             {
                 title: '权限名称',
@@ -208,7 +212,7 @@ export default {
             },
             {
                 title: '操作',
-                key: 'action',
+                key: 'handle',
                 width: 150,
                 align: 'center',
                 render: (h, params) => {
@@ -342,7 +346,7 @@ export default {
         //axios
     },
     modalAdd() {
-        this.$refs['formAuthority'].resetFields();
+        this.$refs[this.form.name].resetFields();
         this.modal.title = '新增权限';
         this.utilReset();
         this.modal.visible.save = true;
@@ -354,8 +358,8 @@ export default {
         this.modal.visible.save = false;
         this.$Message.warning('本次修改已撤销！');
     },
-    saveAuthority(name) {
-        this.$refs[name].validate((valid) => {
+    saveAuthority() {
+        this.$refs[this.form.name].validate((valid) => {
             if (valid) {
                 this.$Message.success('保存成功！');
                 this.modal.visible.save = false;
@@ -365,7 +369,7 @@ export default {
         });
     },
     resetForm() {
-        this.$refs['formAuthority'].resetFields();
+        this.$refs[this.form.name].resetFields();
         this.utilReset();
     },
     delAuthority() {
@@ -374,7 +378,7 @@ export default {
         this.$Message.success('删除成功!');
     },
     modalEdit(index) {
-        this.$refs['formAuthority'].resetFields();
+        this.$refs[this.form.name].resetFields();
         this.modal.title = '编辑权限';
         this.utilEdit(index);
         this.modal.visible.save = true;

@@ -2,8 +2,8 @@
 <template>
   <div id="role-manage">
     <div class="input-first">
-        <Row>
-            <Col span="8" offset="8">
+        <Row type="flex" justify="center">
+            <Col span="7">
                 <Input 
                     v-model.trim="input"
                     size="large" 
@@ -61,8 +61,8 @@
             </Form> 
         </div> 
         <div slot="footer" style="text-align:center">
-            <Button type="primary" shape="circle" icon="filing" @click="saveRole('formRole')">保存并分配权限</Button>
-            <Button type="ghost" shape="circle" icon="refresh" style="margin-left: 10px" @click="resetForm('formRole')">重置</Button>
+            <Button type="primary" shape="circle" icon="filing" @click="saveRole">保存并分配权限</Button>
+            <Button type="ghost" shape="circle" icon="refresh" style="margin-left: 10px" @click="resetForm">重置</Button>
         </div>
     </Modal>
     <Modal v-model="modal.visible.del" width="360" :mask-closable="false">
@@ -100,6 +100,9 @@ export default {
   name: 'RoleManage',
   data () {
     return {
+        form: {
+            name: 'formRole'
+        },
         input: '',
         index: -1,
         columnsRole: [
@@ -290,7 +293,7 @@ export default {
         //axios
     },
     modalAdd() {
-        this.$refs['formRole'].resetFields();
+        this.$refs[this.form.name].resetFields();
         this.utilReset();
         this.modal.title = '新增角色';
         this.modal.visible.save = true;
@@ -303,8 +306,8 @@ export default {
         this.modal.visible.save = false;
         this.$Message.warning('本次修改已撤销！');
     },
-    saveRole(name) {
-        this.$refs[name].validate((valid) => {
+    saveRole() {
+        this.$refs[this.form.name].validate((valid) => {
             if (valid) {
                 this.$Message.success('保存成功！');
                 this.modal.visible.save = false;
@@ -314,8 +317,8 @@ export default {
         })
         //axios
     },
-    resetForm(name) {
-        this.$refs[name].resetFields();
+    resetForm() {
+        this.$refs[this.form.name].resetFields();
         this.utilReset();
     },
     delRole() {
@@ -332,7 +335,7 @@ export default {
         this.modal.visible.show = true;
     },
     modalEdit(index) {
-        this.$refs['formRole'].resetFields();
+        this.$refs[this.form.name].resetFields();
         this.modal.title = '编辑角色';
         //axios
         let check = ['002','003','006','007'];
