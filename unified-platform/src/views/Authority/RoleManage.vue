@@ -90,7 +90,6 @@
             <Button type="primary" long @click="modalCloseShow">关 闭</Button>
         </div>
     </Modal>
-
   </div>
 </template>
 

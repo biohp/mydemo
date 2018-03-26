@@ -63,6 +63,7 @@ export default {
   },
   methods: {
       login(name) {
+        //axios()
           if("admin"===this.formLogin.user&&"123456"===this.formLogin.password){
               this.$Message.success('登录成功!');
               this.$router.push({ path: '/vehicle/car/carQuery' });
